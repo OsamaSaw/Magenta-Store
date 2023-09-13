@@ -620,9 +620,12 @@ h1,h2,h5 {
 }
 
 .swiper-button-prev, .swiper-button-next{
-  width: 42px;
-    height: 42px;
-    z-index: 100;
+    color: white !important;
+    // fill: #FF9933 !important;
+    // stroke: #FF9933 !important;
+}
+.swiper-pagination-bullet-active {
+  background: #FF9933;
 }
 
 .page-intro {
@@ -1429,7 +1432,7 @@ h1,h2,h5 {
       position: fixed;
       z-index: 99;
       padding: 20px 20px;
-      background-color: #FFF;
+      background-color: #2F2F2F;
       transition: all .4s ease;
       @include breakpoint(phone) {
         top: 134px;
@@ -1461,7 +1464,7 @@ h1,h2,h5 {
       padding: 8px 16px;
       z-index: 100;
       font-size: 12px;
-      background-color: #FFF;
+      // background-color: #FFF;
       border-bottom: 1px solid #E6E6E6;
       @include breakpoint(phone) {
         top: 100px;
@@ -1505,13 +1508,13 @@ h1,h2,h5 {
         height: 20px;
         width: 20px;
         margin-top: -7px;
-        border-color: #000;
+        border-color: orange;
         &.rc-slider-handle-dragging {
           box-shadow: none;
         }
       }
       .rc-slider-track {
-        background: #000000;
+        background: orange;
       }
     }
     .products-filter__block__content {
@@ -1530,6 +1533,7 @@ h1,h2,h5 {
         font-size: 18px;
         margin-right: auto;
         font-weight: 300;
+        color: white;
         @include breakpoint(phone) {
           font-size: 24px;
         }
@@ -1614,7 +1618,7 @@ h1,h2,h5 {
   font-weight: 300;
   font-size: 14px;
   display: flex;
-  color: #000;
+  color: #fff;
   margin-bottom: 18px;
   align-items: center;
   .checkbox__check {
@@ -1636,7 +1640,7 @@ h1,h2,h5 {
       height: 12.5px;
       transform: scale(1) rotate(45deg);
       z-index: 100;
-      border: 1px solid black;
+      border: 1px solid white;
       -webkit-transition: all .2s linear;
       -o-transition: all .2s linear;
       transition: all .2s linear;
