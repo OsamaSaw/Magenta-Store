@@ -16,6 +16,7 @@ const Range = createSliderWithTooltip(Slider.Range);
 const ProductsFilter = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [PriceRange, setPriceRange] = useState<number[]>([]);
   const router = useRouter();
   const getUpdatedArray = (data: string[], key: string) => {
     const current = data?.find((item) => item === key);
@@ -30,13 +31,36 @@ const ProductsFilter = () => {
   const handleClick = (key: string) => {
     const categories = getUpdatedArray(selectedCategories, key);
     setSelectedCategories(categories);
-
-    if (!categories.length) {
+    if (!categories.length && !PriceRange) {
       // If there are no selected categories, remove the 'filter' query parameter.
       router.push(
         {
           pathname: router.pathname,
           query: {},
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else if (!categories.length && PriceRange) {
+      // If there are no selected categories, remove the 'filter' query parameter.
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { min: PriceRange[0], max: PriceRange[1] },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else if (PriceRange && categories.length) {
+      // Update the 'filter' query parameter with the selected categories.
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            filter: categories.join(","),
+            min: PriceRange[0],
+            max: PriceRange[1],
+          },
         },
         undefined,
         { shallow: true }
@@ -53,6 +77,31 @@ const ProductsFilter = () => {
       );
     }
   };
+  function handlePriceRange(value: []) {
+    if (value && !selectedCategories.length) {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: { min: value[0], max: value[1] },
+        },
+        undefined,
+        { shallow: true }
+      );
+    } else if (value && selectedCategories.length) {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            filter: selectedCategories.join(","),
+            min: value[0],
+            max: value[1],
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }
 
   useEffect(() => {
     if (!router?.isReady) return;
@@ -101,15 +150,18 @@ const ProductsFilter = () => {
             <Range
               allowCross={false}
               min={0}
-              max={20}
-              defaultValue={[3, 10]}
+              max={200}
+              defaultValue={[3, 100]}
               tipFormatter={(value) => `${value}$`}
-              onChange={(value) => console.log(value)}
+              onChange={(value) => {
+                handlePriceRange(value);
+                setPriceRange(value);
+              }}
             />
           </div>
           <div className="flex flex-row justify-between">
             <span>0$</span>
-            <span>20$</span>
+            <span>200$</span>
           </div>
         </div>
 
