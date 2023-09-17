@@ -3,6 +3,7 @@ import PageIntro from "../components/page-intro";
 import ProductsFeatured from "../components/products-featured";
 import Footer from "../components/footer";
 import useSwr from "swr";
+import { MainCarousel } from "components/products-featured/carousel/MainCarousel";
 // import Subscribe from "../components/subscribe";
 
 const IndexPage = () => {
@@ -11,7 +12,10 @@ const IndexPage = () => {
   return (
     <Layout>
       <PageIntro />
-      <ProductsFeatured products={data} title="Top selling" />
+      <MainCarousel
+        carouselImages={["/images/featured1.jpg", "/images/featured2.jpg"]}
+      />
+      <ProductsFeatured products={data} title="Windows Keys" />
       <ProductsFeatured products={data} title="Anti-Virus" />
       {/* <section className="featured">
         <div className="container">
