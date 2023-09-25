@@ -104,14 +104,14 @@ const ProductsFilter = () => {
   }
 
   useEffect(() => {
-    if (!router?.isReady) return;
+    // if (!router?.isReady) return;
 
-    const categoryQuery = router?.query?.filter;
+    const categoryQuery = router?.query?.filter as string;
 
     if (categoryQuery) {
       setSelectedCategories(categoryQuery?.split(","));
     }
-  }, []);
+  }, [router.query.filter]);
 
   return (
     <form className="products-filter">
@@ -138,7 +138,12 @@ const ProductsFilter = () => {
                 key={index}
                 name="product-type"
                 label={type.title}
-                onChange={() => handleClick(type.title)}
+                checked={((router.query.filter as string) ?? "")
+                  .split(",")
+                  .includes(type.title)}
+                onChange={() => {
+                  handleClick(type.title);
+                }}
               />
             ))}
           </div>
@@ -151,7 +156,7 @@ const ProductsFilter = () => {
               allowCross={false}
               min={0}
               max={200}
-              defaultValue={[3, 100]}
+              defaultValue={[0, 200]}
               tipFormatter={(value) => `${value}$`}
               onChange={(value) => {
                 handlePriceRange(value);

@@ -42,10 +42,8 @@ const Content = ({ product }: ProductContent) => {
       id: product.id,
       name: product.name,
       thumb: product.images ? product.images[0] : "",
-      price: product.currentPrice,
+      price: product?.price - product?.discount,
       count: count,
-      color: color,
-      size: itemSize,
     };
 
     const productStore = {
@@ -61,13 +59,13 @@ const Content = ({ product }: ProductContent) => {
       <div className="product-content__intro">
         <h5 className="product__id">
           Product ID:<br></br>
-          {product.id}
+          {product?.id}
         </h5>
-        {!product.price && <span className="product-on-sale">Sale</span>}
-        <h2 className="product__name">{product.name}</h2>
+        {!product?.price && <span className="product-on-sale">Sale</span>}
+        <h2 className="product__name">{product?.name}</h2>
         <div className="product__prices">
-          <h4>${product.currentPrice}</h4>
-          {product.discount && (
+          <h4>${product?.price - product?.discount}</h4>
+          {product?.discount && (
             <span className="line-through">${product.price}</span>
           )}
         </div>
