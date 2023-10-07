@@ -2,9 +2,16 @@ import { BiWorld } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import { BsExclamationCircle } from "react-icons/bs";
 import { HiMiniKey } from "react-icons/hi2";
+import { AiFillCaretDown } from "react-icons/ai";
 import { useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import DataX from "../../../utils/data/dateX";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
+
 type ProductDescriptionType = {
   description: string;
   sysReq: string;
@@ -42,7 +49,7 @@ const Description = ({
   return (
     <section className="product-single__description">
       <div className="product-description-block">
-        <div className="hidden sm:flex justify-around align-middle py-5">
+        <div className="hidden md:flex justify-around align-middle py-5">
           {/* Desktop view */}
           <span
             className={`cursor-pointer ${
@@ -112,62 +119,66 @@ const Description = ({
           </CSSTransition>
         </div>
       </div>
-      <div className="sm:hidden">
-        {/* Mobile view: Accordion list */}
-        <ul>
-          <li
-            className={`cursor-pointer ${
-              openTabs.includes(0) ? "text-[#FBB03B]" : ""
-            }`}
-            onClick={() => toggleTab(0)}
+      <div className="md:hidden">
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<AiFillCaretDown />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <BsExclamationCircle className="inline-block mx-1" /> Description
-            {openTabs.includes(0) ? (
-              <div className="transition-all ease-in-out duration-300">
-                <div className="text-white">{description}</div>
-              </div>
-            ) : null}
-          </li>
-          <li
-            className={`cursor-pointer ${
-              openTabs.includes(1) ? "text-[#FBB03B]" : ""
-            }`}
-            onClick={() => toggleTab(1)}
+            <Typography>
+              <BsExclamationCircle className="inline-block mx-1" /> Description
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{description}</Typography>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<AiFillCaretDown />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <IoMdSettings className="inline-block mx-1" /> System requirements
-            {openTabs.includes(1) ? (
-              <div className="transition-all ease-in-out duration-300">
-                <div className="text-white">{sysReq}</div>
-              </div>
-            ) : null}
-          </li>
-          <li
-            className={`cursor-pointer ${
-              openTabs.includes(2) ? "text-[#FBB03B]" : ""
-            }`}
-            onClick={() => toggleTab(2)}
+            <Typography>
+              <IoMdSettings className="inline-block mx-1" /> System requirements
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{sysReq}</Typography>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<AiFillCaretDown />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <HiMiniKey className="inline-block mx-1" /> Key activation
-            {openTabs.includes(2) ? (
-              <div className="transition-all ease-in-out duration-300">
-                <div className="text-white">{keyAct}</div>
-              </div>
-            ) : null}
-          </li>
-          <li
-            className={`cursor-pointer ${
-              openTabs.includes(3) ? "text-[#FBB03B]" : ""
-            }`}
-            onClick={() => toggleTab(3)}
+            <Typography>
+              <HiMiniKey className="inline-block mx-1" /> Key activation
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{keyAct}</Typography>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<AiFillCaretDown />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <BiWorld className="inline-block mx-1" /> Languages
-            {openTabs.includes(3) ? (
-              <div className="transition-all ease-in-out duration-300">
-                <div className="text-white">{lang}</div>
-              </div>
-            ) : null}
-          </li>
-        </ul>
+            <Typography>
+              <BiWorld className="inline-block mx-1" /> Languages
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{lang}</Typography>
+          </AccordionDetails>
+        </Accordion>
       </div>
     </section>
   );

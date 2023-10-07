@@ -32,11 +32,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   };
 };
 
-const Product = ({ pid }: { pid: number }) => {
+const Product = ({ pid }: { pid: string }) => {
   // const fetcher = (url: string) => fetch(url).then((res) => res.json());
   // const { data } = useSwr("/api/products", fetcher);
   const [selectedImage, setSelectedImage] = useState(0);
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<ProductType>();
 
   const fetchProducts = async () => {
     await getDocs(collection(db, "products")).then((querySnapshot) => {
@@ -52,25 +53,28 @@ const Product = ({ pid }: { pid: number }) => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    setSelectedProduct(products.find((x) => x.name == pid));
+  }, [pid]);
+
   return (
     <Layout>
       <Breadcrumb />
-
       <section className="product-single">
         <div className="container">
           <div className="product-single__content">
             <Gallery
-              images={products[pid]?.images || [""]}
+              images={selectedProduct?.images || [""]}
               selectedImage={selectedImage}
               setSelectedImage={setSelectedImage}
             />
-            <Content product={products[pid]} />
+            <Content product={selectedProduct} />
           </div>
           <Description
-            description={products[pid]?.description}
-            keyAct={products[pid]?.keyAct}
-            lang={products[pid]?.lang}
-            sysReq={products[pid]?.sysReq}
+            description={selectedProduct?.description}
+            keyAct={selectedProduct?.keyAct}
+            lang={selectedProduct?.lang}
+            sysReq={selectedProduct?.sysReq}
           />
         </div>
       </section>

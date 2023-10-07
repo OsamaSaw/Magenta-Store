@@ -16,6 +16,10 @@
     "next"
   ],
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/material": "^5.14.11",
     "@reduxjs/toolkit": "^1.8.1",
     "@types/react-transition-group": "^4.4.6",
     "firebase": "^10.4.0",

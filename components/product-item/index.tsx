@@ -30,7 +30,7 @@ const ProductItem = ({
           <button
             type="button"
             onClick={() => {
-              router.push(`/product/${id}`);
+              router.push(`/product/${name}`);
             }}
             className="z-40 absolute left-[50%] top-[35%] -mt-[60px] w-28 -ml-[56px] bg-[#FBB03B] text-white rounded-full p-2"
           >
@@ -38,7 +38,7 @@ const ProductItem = ({
           </button>
         </>
       )}
-      <Link href={`/product/${id}`}>
+      <Link href={`/product/${name}`}>
         <div className="product__image">
           <img
             src={images ? images[0] : ""}
