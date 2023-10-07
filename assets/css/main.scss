@@ -7,6 +7,11 @@ html,body{overflow-x:hidden !important
 @import './partials/breakpoints.scss';
 @import './partials/reset.css';
 
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+
 // google fonts
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
@@ -120,7 +125,7 @@ button {
   cursor: pointer;
 }
 
-h1,h2,h5 {
+h1,h5 {
   color: var(--color-black);
 }
 
@@ -1795,6 +1800,7 @@ h1,h2,h5 {
   .quantity-button__btn {
     font-size: 23px;
     font-weight: 400;
+    color: white;
   }
   span {
     font-size: 18px;
@@ -2301,6 +2307,7 @@ h1,h2,h5 {
     font-size: 20px;
     font-weight: 700;
     line-height: 140%;
+    color: white;
   }
   .cart-actions {
     margin-top: 75px;
@@ -2356,7 +2363,8 @@ h1,h2,h5 {
   .cart__btn-back {
     font-weight: 700;
     font-size: 14px;
-    color: #000;
+    // color: #000;
+    color: white;
     margin-right: auto;
     margin-bottom: 40px;
     @include breakpoint(phone) {
@@ -2372,8 +2380,9 @@ h1,h2,h5 {
     height: 40px;
     width: 100%;
     margin-bottom: 18px;
-    border: 1px solid #D8D8D8;
+    border: 1px solid white;
     border-radius: 30px;
+    color: white;
     @include breakpoint(phone) {
       height: 49px;
       width: auto;
@@ -2384,18 +2393,20 @@ h1,h2,h5 {
       margin-right: 70px;
     }
     @include placeholder {
-      color: #ABABAB;
+      color: white;
     }
   }
   .cart-actions__total {
     font-weight: 300;
     margin-right: auto;
+    color: whitesmoke;
     @include breakpoint(tablet-lg) {
       margin-right: 60px;
     }
     strong {
       margin-left: 15px;
-      color: #000;
+      // color: #000;
+      color:white;
       font-weight: 700;
     }
   }
@@ -2531,6 +2542,7 @@ h1,h2,h5 {
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 10px;
+      color: white;
     }
     p {
       font-size: 13px;
@@ -2557,6 +2569,23 @@ h1,h2,h5 {
     position: absolute;
     z-index: 100;
   }
+}
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
 }
 
 .back-button-section {

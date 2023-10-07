@@ -22,12 +22,12 @@ export type ProductType = {
   thumb: string;
   price: string;
   count: number;
-  size: string;
   images: string[];
   discount?: string;
-  currentPrice: number;
-  punctuation: PunctuationType;
   description: string;
+  sysReq: string;
+  keyAct: string;
+  lang: string;
 };
 
 export type ProductTypeList = {
@@ -37,7 +37,6 @@ export type ProductTypeList = {
   color: string;
   images: string[];
   discount?: string;
-  currentPrice?: number;
 };
 
 export type ProductStoreType = {
@@ -46,8 +45,8 @@ export type ProductStoreType = {
   thumb: string;
   price: number;
   count: number;
-  color: string;
-  size: string;
+  // color: string;
+  // size: string;
 };
 
 export type GtagEventType = {

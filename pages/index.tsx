@@ -4,19 +4,40 @@ import ProductsFeatured from "../components/products-featured";
 import Footer from "../components/footer";
 import useSwr from "swr";
 import { MainCarousel } from "components/products-featured/carousel/MainCarousel";
+import { useEffect, useState } from "react";
+import { ProductType } from "types";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 // import Subscribe from "../components/subscribe";
 
 const IndexPage = () => {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data } = useSwr("/api/products", fetcher);
+  // const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  // const { data } = useSwr("/api/products", fetcher);
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  const fetchProducts = async () => {
+    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      console.log(newData);
+      setProducts(newData);
+    });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+    console.log(products);
+  }, []);
   return (
     <Layout>
       <PageIntro />
       <MainCarousel
         carouselImages={["/images/featured1.jpg", "/images/featured2.jpg"]}
       />
-      <ProductsFeatured products={data} title="Windows Keys" />
-      <ProductsFeatured products={data} title="Anti-Virus" />
+      <ProductsFeatured products={products} title="Windows Keys" />
+      <ProductsFeatured products={products} title="Anti-Virus" />
       {/* <section className="featured">
         <div className="container">
           <article
