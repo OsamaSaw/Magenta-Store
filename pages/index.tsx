@@ -13,22 +13,28 @@ import { db } from "../firebase";
 const IndexPage = () => {
   // const fetcher = (url: string) => fetch(url).then((res) => res.json());
   // const { data } = useSwr("/api/products", fetcher);
-  const [products, setProducts] = useState<ProductType[]>([]);
-
+  // const [products, setProducts] = useState<ProductType[]>([]);
+  const [antiVList, setAntiVList] = useState<ProductType[]>([]);
+  const [protectionList, setProtectionList] = useState<ProductType[]>([]);
   const fetchProducts = async () => {
     await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const newData = querySnapshot.docs.map(
+        (doc) =>
+          ({
+            ...doc.data(),
+            id: doc.id,
+          } as ProductType)
+      );
+      // setProducts(newData);
       console.log(newData);
-      setProducts(newData);
+      setAntiVList(newData.filter((x) => x.category == "AntiVirus"));
+      setProtectionList(newData.filter((x) => x.category == "Protection"));
     });
   };
 
   useEffect(() => {
     fetchProducts();
-    console.log(products);
+    // console.log(products);
   }, []);
   return (
     <Layout>
@@ -36,8 +42,8 @@ const IndexPage = () => {
       <MainCarousel
         carouselImages={["/images/featured1.jpg", "/images/featured2.jpg"]}
       />
-      <ProductsFeatured products={products} title="Windows Keys" />
-      <ProductsFeatured products={products} title="Anti-Virus" />
+      <ProductsFeatured products={protectionList} title="Protection" />
+      <ProductsFeatured products={antiVList} title="Anti-Virus" />
       {/* <section className="featured">
         <div className="container">
           <article
