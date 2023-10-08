@@ -16,7 +16,7 @@ const IndexPage = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   const fetchProducts = async () => {
-    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
+    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,

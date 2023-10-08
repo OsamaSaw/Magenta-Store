@@ -52,15 +52,14 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
         }}
       >
         {products.map((item) => (
-          <SwiperSlide key={item.id}>
+          <SwiperSlide key={item?.id}>
             <ProductItem
-              id={item.id}
-              name={item.name}
-              price={item.price}
-              color={item.color}
-              discount={item.discount}
-              key={item.id}
-              images={item.images}
+              id={item?.id}
+              name={item?.name}
+              price={item?.price}
+              discount={item?.discount}
+              key={item?.id}
+              images={item?.image}
             />
           </SwiperSlide>
         ))}
