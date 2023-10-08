@@ -40,7 +40,6 @@ const ShoppingCart = () => {
                   <Item
                     key={item.id}
                     id={item.id}
-                    thumb={item.thumb}
                     name={item.name}
                     // color={item.color}
                     price={item.price}
