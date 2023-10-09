@@ -3008,3 +3008,13 @@ h1,h5 {
     }
   }
 }
+
+.MuiPagination-root {
+  button {
+    color: white !important;
+ }
+}
+.Mui-selected{
+  background-color:#f9a2008e !important;
+  color:black !important;
+}
