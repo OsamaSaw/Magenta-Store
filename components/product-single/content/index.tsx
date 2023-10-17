@@ -16,8 +16,8 @@ type ProductContent = {
 const Content = ({ product }: ProductContent) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState<number>(1);
-  const [color, setColor] = useState<string>("");
-  const [itemSize, setItemSize] = useState<string>("");
+  // const [color, setColor] = useState<string>("");
+  // const [itemSize, setItemSize] = useState<string>("");
 
   // const onColorSet = (e: string) => setColor(e);
   // const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -41,8 +41,8 @@ const Content = ({ product }: ProductContent) => {
     const productToSave: ProductStoreType = {
       id: product.id,
       name: product.name,
-      thumb: product.images ? product.images[0] : "",
-      price: product?.price - product?.discount,
+      image: product.image ? product.image[0] : "",
+      price: (product?.price - (product?.discount ?? 0)).toFixed(2),
       count: count,
     };
 
@@ -64,7 +64,7 @@ const Content = ({ product }: ProductContent) => {
         {!product?.price && <span className="product-on-sale">Sale</span>}
         <h2 className="product__name">{product?.name}</h2>
         <div className="product__prices">
-          <h4>${product?.price - product?.discount}</h4>
+          <h4>{(product?.price - (product?.discount ?? 0)).toFixed(2)}</h4>
           {product?.discount && (
             <span className="line-through">${product.price}</span>
           )}

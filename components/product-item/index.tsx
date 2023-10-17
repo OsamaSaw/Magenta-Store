@@ -56,7 +56,7 @@ const ProductItem = ({
               "product__price " + (discount ? "product__price--discount" : "")
             }
           >
-            <h4>${price - discount}</h4>
+            <h4>{(price - (discount ?? 0)).toFixed(2)}</h4>
 
             {discount && (
               <del>

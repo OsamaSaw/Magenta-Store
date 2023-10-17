@@ -19,11 +19,11 @@ export type ReviewType = {
 export type ProductType = {
   id: string;
   name: string;
-  thumb: string;
-  price: string;
+  category: string;
+  price: number;
   count: number;
-  images: string[];
-  discount?: string;
+  image: string[];
+  discount?: number;
   description: string;
   sysReq: string;
   keyAct: string;
@@ -33,17 +33,16 @@ export type ProductType = {
 export type ProductTypeList = {
   id: string;
   name: string;
-  price: string;
-  color: string;
+  price: number;
   images: string[];
-  discount?: string;
+  discount?: number;
 };
 
 export type ProductStoreType = {
   id: string;
   name: string;
-  thumb: string;
-  price: number;
+  image: string;
+  price: string;
   count: number;
   // color: string;
   // size: string;

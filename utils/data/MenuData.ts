@@ -6,21 +6,21 @@ export const videoGames: listType[] = [
       { name: "Xbox games", link: "/xbox" },
       { name: "playstation", link: "/playstation" },
     ],
-    title: "Platforms",
+    title: "AntiVirus",
   },
   {
     listOfLinks: [
       { name: "Netflix Gift Cards", link: "/netflix" },
       { name: "Disney+ Gift Cards", link: "/disney" },
     ],
-    title: "eGift",
+    title: "Protection",
   },
   {
     listOfLinks: [
       { name: "Netflix Gift Cards", link: "/netflix" },
       { name: "Disney+ Gift Cards", link: "/disney" },
     ],
-    title: "eGift Cards",
+    title: "Optimization",
   },
   {
     listOfLinks: [
@@ -28,7 +28,7 @@ export const videoGames: listType[] = [
       { name: "FPS Games", link: "/fps" },
       { name: "Strategy Games", link: "/strategy" },
     ],
-    title: "Genres",
+    title: "Privacy",
   },
 ];
 

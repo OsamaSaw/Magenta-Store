@@ -1,11 +1,11 @@
-import { ProductTypeList } from "types";
+import { ProductType, ProductTypeList } from "types";
 import ProductsCarousel from "./carousel";
 
 const ProductsFeatured = ({
   products,
   title,
 }: {
-  products: ProductTypeList[];
+  products: ProductType[];
   title: string;
 }) => {
   return (
