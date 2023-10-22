@@ -20,6 +20,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
 
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const userName = useSelector((state: RootState) => state.user.user);
   const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
@@ -153,11 +154,20 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          <Link href="/login">
-            <button className="site-header__btn-avatar">
-              <i className="icon-avatar"></i>
-            </button>
-          </Link>
+          {userName == "" ? (
+            <Link href="/login">
+              <button className="site-header__btn-avatar">
+                <i className="icon-avatar"></i>
+              </button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <button className="w-20">
+                <i className="icon-avatar" />
+                <span className="text-base">{userName}</span>
+              </button>
+            </Link>
+          )}
           <button
             onClick={() => setMenuOpen(true)}
             className="site-header__btn-menu"
@@ -166,6 +176,23 @@ const Header = ({ isErrorPage }: HeaderType) => {
               <span></span>
             </i>
           </button>
+        </div>
+      </div>
+      <div className="searchBox_phone">
+        <input
+          style={{
+            width: "90%",
+            alignSelf: "center",
+            color: "black",
+            marginLeft: "10px",
+            marginRight: "10px",
+          }}
+        />
+        <div className="searchButton_phone">
+          <i
+            onClick={() => setSearchOpen(!searchOpen)}
+            className="icon-search"
+          ></i>
         </div>
       </div>
       {showSubMenu && (

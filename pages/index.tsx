@@ -26,7 +26,7 @@ const IndexPage = () => {
           } as ProductType)
       );
       // setProducts(newData);
-      console.log(newData);
+      // console.log(newData);
       setAntiVList(newData.filter((x) => x.category == "AntiVirus"));
       setProtectionList(newData.filter((x) => x.category == "Protection"));
     });

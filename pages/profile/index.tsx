@@ -18,18 +18,10 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { Transactions } from "./transactions";
 const drawerWidth = 240;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const pid = query.pid;
-  return {
-    props: {
-      pid,
-    },
-  };
-};
-
-const Profile = ({ pid, window }: { pid: string; window: Window }) => {
+const Profile = ({ window }: { window: Window }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
@@ -42,7 +34,7 @@ const Profile = ({ pid, window }: { pid: string; window: Window }) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const onSubmit = async (data: LoginMail) => {
+  const onSubmit = async (data: any) => {
     const res = await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
@@ -149,73 +141,70 @@ const Profile = ({ pid, window }: { pid: string; window: Window }) => {
         <Toolbar />
         {currentPage == 0 ? (
           <div>
-            <div className="space-x-4 text-white mb-3">
+            <div className="space-y-5 mt-3 text-white w-[100%] lg:w-[50%]">
               <span>Reset Password:</span>
-              <button
-                onClick={() => router.push("/forgot-password")}
-                type="button"
-                className="btn btn--rounded btn--yellow"
-              >
-                Reset
-              </button>
-            </div>
-            <hr className="solid" style={{ width: "50%" }} />
-            <div className="space-y-5 mt-3 text-white w-[50%]">
-              <span>Change your email:</span>
               <form className="form" onSubmit={handleSubmit(onSubmit)}>
                 <div className="form__input-row">
                   <input
                     className="form__input"
-                    placeholder="email"
-                    type="text"
-                    name="email"
-                    ref={register({
-                      required: true,
-                      pattern:
-                        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    })}
+                    type="password"
+                    placeholder="Old password"
+                    name="oldPassword"
+                    ref={register({ required: true })}
                   />
-
-                  {errors.email && errors.email.type === "required" && (
-                    <p className="message message--error">
-                      This field is required
-                    </p>
-                  )}
-
-                  {errors.email && errors.email.type === "pattern" && (
-                    <p className="message message--error">
-                      Please write a valid email
-                    </p>
-                  )}
+                  {errors.oldPassword &&
+                    errors.oldPassword.type === "required" && (
+                      <p className="message message--error">
+                        This field is required
+                      </p>
+                    )}
                 </div>
 
                 <div className="form__input-row">
                   <input
                     className="form__input"
                     type="password"
-                    placeholder="Password"
-                    name="password"
+                    placeholder="New password"
+                    name="newPassword"
                     ref={register({ required: true })}
                   />
-                  {errors.password && errors.password.type === "required" && (
-                    <p className="message message--error">
-                      This field is required
-                    </p>
-                  )}
+                  {errors.newPassword &&
+                    errors.newPassword.type === "required" && (
+                      <p className="message message--error">
+                        This field is required
+                      </p>
+                    )}
+                </div>
+                <div className="form__input-row">
+                  <input
+                    className="form__input"
+                    type="password"
+                    placeholder="Repeat password"
+                    name="repeatPassword"
+                    ref={register({ required: true })}
+                  />
+                  {errors.repeatPassword &&
+                    errors.repeatPassword.type === "required" && (
+                      <p className="message message--error">
+                        This field is required
+                      </p>
+                    )}
                 </div>
 
                 <button
                   type="submit"
                   className="btn btn--rounded btn--yellow btn-submit"
                 >
-                  Save
+                  Reset
                 </button>
               </form>
             </div>
           </div>
         ) : (
           <div>
-            <span>Transactions</span>
+            <span>
+              <Transactions />
+            </span>
           </div>
         )}
       </Box>

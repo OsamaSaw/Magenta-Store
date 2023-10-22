@@ -11,6 +11,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import RegisterPage from "./RegisterPage";
 import { useRef } from "react";
+import { useRouter } from "next/router";
 
 type LoginMail = {
   email: string;
@@ -20,14 +21,15 @@ type LoginMail = {
 const LoginPage = () => {
   const { register, handleSubmit, errors } = useForm();
   const swiperRef = useRef();
+  const router = useRouter();
 
   const onSubmit = async (data: LoginMail) => {
     const res = await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
     });
-
     console.log(res);
+    router.push("/profile"); // redirect to profile!!!
   };
   const nextSlice = () => {
     swiperRef.current?.slideNext();
@@ -126,14 +128,11 @@ const LoginPage = () => {
                     </a>
                   </div>
 
-                  {/* <div className="form__btns">
-                <button type="button" className="btn-social fb-btn">
-                  <i className="icon-facebook"></i>Facebook
-                </button>
-                <button type="button" className="btn-social google-btn">
-                  <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
-                </button>
-              </div> */}
+                  <div className="form__btns">
+                    <button type="button" className="btn-social google-btn">
+                      <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                    </button>
+                  </div>
 
                   <button
                     type="submit"
