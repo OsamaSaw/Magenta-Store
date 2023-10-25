@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 import Logo from "../../assets/icons/logo";
@@ -8,6 +8,11 @@ import { RootState } from "store";
 import { SubMenuViewer } from "./subMenuViewer";
 import { videoGames, cards, psn } from "utils/data/MenuData";
 import { MenuItem } from "components/header/MenuItem";
+import Fade from "@mui/material/Fade";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./../../firebase";
+import { ProductType } from "types";
+import { Autocomplete, Divider, Stack, TextField } from "@mui/material";
 
 type HeaderType = {
   isErrorPage?: Boolean;
@@ -21,6 +26,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
 
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const userName = useSelector((state: RootState) => state.user.user);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
@@ -29,7 +35,19 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef(null);
-  const searchRef = useRef(null);
+  const mobileSearchBar = useRef(null);
+  const [search, setSearch] = useState("");
+
+  const fetchProducts = async () => {
+    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      // console.log(newData);
+      setProducts(newData);
+    });
+  };
 
   const headerClass = () => {
     if (window.pageYOffset === 0) {
@@ -38,6 +56,18 @@ const Header = ({ isErrorPage }: HeaderType) => {
       setOnTop(false);
     }
   };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+  };
+
+  // on click outside
+  useOnClickOutside(navRef, closeMenu);
+  // useOnClickOutside(searchRef, closeSearch);
 
   useEffect(() => {
     if (!arrayPaths.includes(router.pathname) || isErrorPage) {
@@ -50,17 +80,29 @@ const Header = ({ isErrorPage }: HeaderType) => {
     };
   }, []);
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  const closeSearch = () => {
-    setSearchOpen(false);
-  };
+  useEffect(() => {
+    if (!onTop) {
+      setTimeout(() => {
+        mobileSearchBar.current.style.display = "none";
+      }, 500);
+    } else {
+      mobileSearchBar.current.style.display = "flex";
+    }
+  }, [onTop]);
 
-  // on click outside
-  useOnClickOutside(navRef, closeMenu);
-  useOnClickOutside(searchRef, closeSearch);
+  const searchSuggestions = useMemo(() => {
+    return products.map((option, index) => ({
+      yourLabel: option.name,
+      id: index,
+      image: option.image,
+      price: option.price || 15,
+      discount: option.discount || 5.5,
+    }));
+  }, [products]);
 
   return (
     <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
@@ -73,18 +115,86 @@ const Header = ({ isErrorPage }: HeaderType) => {
         </Link>
         <div className="miniContainer">
           <div className="searchBox">
-            <input
-              style={{
-                width: "90%",
+            <Stack
+              sx={{
+                width: "100%",
                 alignSelf: "center",
                 color: "black",
                 marginLeft: "10px",
                 marginRight: "10px",
               }}
-            />
+            >
+              <Autocomplete
+                className="sm:block hidden"
+                options={searchSuggestions}
+                getOptionLabel={(option) => option.yourLabel} // Specify the property to use as the label
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search"
+                    onChange={({ target }) => setSearch(target.value)}
+                    onKeyDown={(ev) => {
+                      if (ev.key === "Enter") {
+                        router.push(`/products?search=${search}`);
+                        ev.preventDefault();
+                      }
+                    }}
+                  />
+                )}
+                renderOption={(props, option) => (
+                  <>
+                    <Link href={`/product/${option.yourLabel}`}>
+                      <li {...props} key={option.id}>
+                        <div className="flex flex-row w-full">
+                          <img
+                            className="w-16 h-16 mx-5"
+                            src={option.image[0]}
+                          />
+                          <div className="flex flex-row justify-between w-full">
+                            <div className="flex flex-col">
+                              <span className="text-[8px]">
+                                OFFER FROM SELLERS
+                              </span>
+                              <span>{option.yourLabel}</span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                              {/* price */}
+                              <span>
+                                {"$ " +
+                                  (option?.price - option?.discount).toFixed(2)}
+                              </span>
+                              <span className="line-through">
+                                {"$ " + option.price}
+                              </span>
+                              <span className=" border-red-500 border border-solid bg-red-50 w-fit">
+                                {"- " +
+                                  (
+                                    (option?.discount / option?.price) *
+                                    100
+                                  ).toFixed(1) +
+                                  " %"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </Link>
+                    <Divider variant="inset" component="li" />
+                  </>
+                )}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    border: "none",
+                  },
+                  "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                    border: "none",
+                  },
+                }}
+              />
+            </Stack>
             <div className="searchButton">
               <i
-                onClick={() => setSearchOpen(!searchOpen)}
+                onClick={() => router.push(`/products?search=${search}`)}
                 className="icon-search"
               ></i>
             </div>
@@ -178,23 +288,90 @@ const Header = ({ isErrorPage }: HeaderType) => {
           </button>
         </div>
       </div>
-      <div className="searchBox_phone">
-        <input
-          style={{
-            width: "90%",
-            alignSelf: "center",
-            color: "black",
-            marginLeft: "10px",
-            marginRight: "10px",
-          }}
-        />
-        <div className="searchButton_phone">
-          <i
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="icon-search"
-          ></i>
+      <Fade timeout={500} in={onTop}>
+        <div ref={mobileSearchBar} className="searchBox_phone">
+          <Stack
+            sx={{
+              width: "100%",
+              alignSelf: "center",
+              color: "black",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          >
+            <Autocomplete
+              className="searchBar"
+              options={searchSuggestions}
+              getOptionLabel={(option) => option.yourLabel} // Specify the property to use as the label
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Search"
+                  onChange={({ target }) => setSearch(target.value)}
+                  onKeyDown={(ev) => {
+                    if (ev.key === "Enter") {
+                      router.push(`/products?search=${search}`);
+                      ev.preventDefault();
+                    }
+                  }}
+                />
+              )}
+              renderOption={(props, option) => (
+                <>
+                  <Link href={`/product/${option.yourLabel}`}>
+                    <li {...props} key={option.id}>
+                      <div className="flex flex-row w-full">
+                        <img className="w-16 h-16 mr-5" src={option.image[0]} />
+                        <div className="flex flex-row justify-between w-full">
+                          <div className="flex flex-col">
+                            <span className="text-[8px]">
+                              OFFER FROM SELLERS
+                            </span>
+                            <span>{option.yourLabel}</span>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            {/* price */}
+                            <span>
+                              {"$ " +
+                                (option?.price - option?.discount).toFixed(2)}
+                            </span>
+                            <span className="line-through">
+                              {"$ " + option.price}
+                            </span>
+                            <span className=" border-red-500 border border-solid bg-red-50 w-fit">
+                              {"- " +
+                                (
+                                  (option?.discount / option?.price) *
+                                  100
+                                ).toFixed(1) +
+                                " %"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </Link>
+                  <Divider variant="inset" component="li" />
+                </>
+              )}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  border: "none",
+                },
+                "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                  border: "none",
+                },
+              }}
+            />
+          </Stack>
+          <div className="searchButton_phone">
+            <i
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="icon-search"
+            ></i>
+          </div>
         </div>
-      </div>
+      </Fade>
       {showSubMenu && (
         <SubMenuViewer
           setShowSubMenu={setShowSubMenu}

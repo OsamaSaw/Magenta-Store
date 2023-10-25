@@ -459,7 +459,7 @@ display: none;
     border-color: black;
     justify-content: space-between;
     @include breakpoint(phone) {
-      display: none;
+      display: none !important;
     }
   }
   .searchButton_phone{
