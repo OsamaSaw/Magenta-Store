@@ -13,6 +13,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "./../../firebase";
 import { ProductType } from "types";
 import { Autocomplete, Divider, Stack, TextField } from "@mui/material";
+import { CustomSearchBar } from "./CustomSearchBar";
 
 type HeaderType = {
   isErrorPage?: Boolean;
@@ -87,10 +88,14 @@ const Header = ({ isErrorPage }: HeaderType) => {
   useEffect(() => {
     if (!onTop) {
       setTimeout(() => {
-        mobileSearchBar.current.style.display = "none";
+        if (mobileSearchBar.current) {
+          mobileSearchBar.current.style.display = "none";
+        }
       }, 500);
     } else {
-      mobileSearchBar.current.style.display = "flex";
+      if (mobileSearchBar.current) {
+        mobileSearchBar.current.style.display = "flex";
+      }
     }
   }, [onTop]);
 
@@ -124,72 +129,11 @@ const Header = ({ isErrorPage }: HeaderType) => {
                 marginRight: "10px",
               }}
             >
-              <Autocomplete
-                className="sm:block hidden"
-                options={searchSuggestions}
-                getOptionLabel={(option) => option.yourLabel} // Specify the property to use as the label
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Search"
-                    onChange={({ target }) => setSearch(target.value)}
-                    onKeyDown={(ev) => {
-                      if (ev.key === "Enter") {
-                        router.push(`/products?search=${search}`);
-                        ev.preventDefault();
-                      }
-                    }}
-                  />
-                )}
-                renderOption={(props, option) => (
-                  <>
-                    <Link href={`/product/${option.yourLabel}`}>
-                      <li {...props} key={option.id}>
-                        <div className="flex flex-row w-full">
-                          <img
-                            className="w-16 h-16 mx-5"
-                            src={option.image[0]}
-                          />
-                          <div className="flex flex-row justify-between w-full">
-                            <div className="flex flex-col">
-                              <span className="text-[8px]">
-                                OFFER FROM SELLERS
-                              </span>
-                              <span>{option.yourLabel}</span>
-                            </div>
-                            <div className="flex flex-col items-end">
-                              {/* price */}
-                              <span>
-                                {"$ " +
-                                  (option?.price - option?.discount).toFixed(2)}
-                              </span>
-                              <span className="line-through">
-                                {"$ " + option.price}
-                              </span>
-                              <span className=" border-red-500 border border-solid bg-red-50 w-fit">
-                                {"- " +
-                                  (
-                                    (option?.discount / option?.price) *
-                                    100
-                                  ).toFixed(1) +
-                                  " %"}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    </Link>
-                    <Divider variant="inset" component="li" />
-                  </>
-                )}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    border: "none",
-                  },
-                  "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                    border: "none",
-                  },
-                }}
+              <CustomSearchBar
+                search={search}
+                searchSuggestions={searchSuggestions}
+                setSearch={setSearch}
+                customClassName="sm:block hidden"
               />
             </Stack>
             <div className="searchButton">
@@ -299,69 +243,10 @@ const Header = ({ isErrorPage }: HeaderType) => {
               marginRight: "10px",
             }}
           >
-            <Autocomplete
-              className="searchBar"
-              options={searchSuggestions}
-              getOptionLabel={(option) => option.yourLabel} // Specify the property to use as the label
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Search"
-                  onChange={({ target }) => setSearch(target.value)}
-                  onKeyDown={(ev) => {
-                    if (ev.key === "Enter") {
-                      router.push(`/products?search=${search}`);
-                      ev.preventDefault();
-                    }
-                  }}
-                />
-              )}
-              renderOption={(props, option) => (
-                <>
-                  <Link href={`/product/${option.yourLabel}`}>
-                    <li {...props} key={option.id}>
-                      <div className="flex flex-row w-full">
-                        <img className="w-16 h-16 mr-5" src={option.image[0]} />
-                        <div className="flex flex-row justify-between w-full">
-                          <div className="flex flex-col">
-                            <span className="text-[8px]">
-                              OFFER FROM SELLERS
-                            </span>
-                            <span>{option.yourLabel}</span>
-                          </div>
-                          <div className="flex flex-col items-end">
-                            {/* price */}
-                            <span>
-                              {"$ " +
-                                (option?.price - option?.discount).toFixed(2)}
-                            </span>
-                            <span className="line-through">
-                              {"$ " + option.price}
-                            </span>
-                            <span className=" border-red-500 border border-solid bg-red-50 w-fit">
-                              {"- " +
-                                (
-                                  (option?.discount / option?.price) *
-                                  100
-                                ).toFixed(1) +
-                                " %"}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </Link>
-                  <Divider variant="inset" component="li" />
-                </>
-              )}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  border: "none",
-                },
-                "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                },
-              }}
+            <CustomSearchBar
+              search={search}
+              searchSuggestions={searchSuggestions}
+              setSearch={setSearch}
             />
           </Stack>
           <div className="searchButton_phone">
