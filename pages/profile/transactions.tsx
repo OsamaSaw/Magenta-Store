@@ -42,8 +42,8 @@ const rows = [
 export const Transactions = ({}: {}) => {
   return (
     <section>
-      <div>Order history</div>
-      <div className="searchBox">
+      <span className="text-2xl text-white">Order history</span>
+      {/* <div className="searchBox">
         <input
           style={{
             width: "100%",
@@ -55,16 +55,23 @@ export const Transactions = ({}: {}) => {
         />
         <div className="searchButton">
           <i
-            onClick={() => setSearchOpen(!searchOpen)}
+            // onClick={() => setSearchOpen(!searchOpen)}
             className="icon-search"
           ></i>
         </div>
-      </div>
-      <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 650, backgroundColor: "#292929" }}
-          aria-label="simple table"
-        >
+      </div> */}
+      <TableContainer
+        id="myTable"
+        sx={{
+          backgroundColor: "#292929",
+          width: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginY: "10px",
+        }}
+        component={Paper}
+      >
+        <Table sx={{ backgroundColor: "#292929" }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>DATE</TableCell>

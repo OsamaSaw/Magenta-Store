@@ -3059,3 +3059,11 @@ display: none;
 
 td  {color: white !important;}
 th {color: #9E9E9E !important;}
+
+#myTable tr td:nth-child(3), #myTable th:nth-child(3) {
+  //hiding status bar just to make it readable in transactions
+  @include breakpoint(phone) {
+  display: table-cell;
+  }
+  display: none;
+}
