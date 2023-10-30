@@ -3067,3 +3067,11 @@ th {color: #9E9E9E !important;}
   }
   display: none;
 }
+
+#orderMobile tr td:nth-child(1), #orderMobile th:nth-child(1),#orderMobile tr td:nth-child(2), #orderMobile th:nth-child(2),#orderMobile th:nth-child(3) {
+  //hiding status bar just to make it readable in transactions
+  @include breakpoint(phone) {
+  display: table-cell;
+  }
+  display: none;
+}

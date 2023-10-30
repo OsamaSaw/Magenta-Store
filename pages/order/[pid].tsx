@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import {
-  Link,
   Paper,
   Table,
   TableBody,
@@ -11,13 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { ProductType } from "types";
-import {
-  FieldPath,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./../../firebase";
 import { documentId } from "firebase/firestore";
 
@@ -69,12 +62,11 @@ const Order = ({ pid }: { pid: string }) => {
     fetchProducts();
   }, []);
   return (
-    <div className="flex-1 bg-[#1c1c1c] pt-10">
+    <div className="flex-1 bg-[#1c1c1c] pt-10 px-[10%]">
       <span className="text-2xl text-white m-5">Order Details</span>
       <TableContainer
         sx={{
           backgroundColor: "#292929",
-          width: "90%",
           marginLeft: "auto",
           marginRight: "auto",
           marginY: "10px",
@@ -115,7 +107,6 @@ const Order = ({ pid }: { pid: string }) => {
       <TableContainer
         sx={{
           backgroundColor: "#292929",
-          width: "90%",
           marginLeft: "auto",
           marginRight: "auto",
           marginY: "10px",
@@ -127,6 +118,7 @@ const Order = ({ pid }: { pid: string }) => {
             backgroundColor: "#292929",
           }}
           aria-label="simple table"
+          id="orderMobile"
         >
           <TableHead>
             <TableRow>
@@ -151,24 +143,30 @@ const Order = ({ pid }: { pid: string }) => {
                       <TableCell align="left">
                         {
                           <div className="flex flex-col">
-                            <span>{item.name}</span>
+                            <span className="text-lg">{item.name}</span>
                             <span>platforms</span>
                           </div>
                         }
                       </TableCell>
-                      <TableCell align="right">
-                        <div className="flex flex-col">
-                          <div className="w-full flex flex-row">
-                            <div className="text-center w-[75%] p-5 bg-white text-black">
+                      <TableCell align="center">
+                        <div className="flex flex-col md:hidden items-start">
+                          <span>{item.name}</span>
+                          <span>platforms</span>
+                        </div>
+                        <div className="flex flex-col lg:items-end items-center mr-auto ml-auto">
+                          <div className="w-full md:w-3/4 flex flex-col lg:flex-row space-y-2 lg:space-y-0">
+                            <div className="text-center lg:w-[75%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
                               {currentOrder.items[index].key}
                             </div>
-                            <div className="w-[25%] p-5 bg-orange-400 text-center">
+                            <button className="w-full lg:w-[25%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
                               REDEEM ON Platform
-                            </div>
+                            </button>
                           </div>
-                          <span>How Do I Redeem My Key?</span>
+                          <span className="mt-2 font-light">
+                            How Do I Redeem My Key?
+                          </span>
                         </div>
-                      </TableCell>{" "}
+                      </TableCell>
                     </TableRow>
                   </>
                 );
