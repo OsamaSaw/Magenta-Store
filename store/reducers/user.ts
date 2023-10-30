@@ -16,14 +16,12 @@ type ToggleFavType = {
 };
 
 interface UserSliceTypes {
-  user: any;
+  user: string;
   favProducts: any;
 }
 
 const initialState = {
-  user: {
-    name: "Lucas Pulliese",
-  },
+  user: "",
   favProducts: [],
 } as UserSliceTypes;
 
@@ -61,8 +59,15 @@ const userSlice = createSlice({
         favProducts: state.favProducts,
       };
     },
+    loginUserName(state, action: PayloadAction<string>) {
+      return {
+        ...state,
+        user: action.payload,
+      };
+    },
   },
 });
 
-export const { toggleFavProduct, setUserLogged } = userSlice.actions;
+export const { toggleFavProduct, setUserLogged, loginUserName } =
+  userSlice.actions;
 export default userSlice.reducer;

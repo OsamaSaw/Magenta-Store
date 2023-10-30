@@ -1,5 +1,5 @@
 html,body{overflow-x:hidden !important
-  ;background-image: linear-gradient( 99.9deg, #1b181f 21.2%, #320459 84.8% );
+  ;background-image: radial-gradient(circle, rgba(27,24,31,1) 38%, rgba(151,0,255,1) 100%);
 }
 
 // imports styles
@@ -295,7 +295,7 @@ h1,h5 {
     text-transform: uppercase;
     @include breakpoint(phone) {
       font-size: 13px;
-      padding: 15px 25px;
+      padding: 10px 25px;
     }
     &.btn--border {
       border: 1px solid #D8D8D8;
@@ -379,12 +379,12 @@ h1,h5 {
   .site-logo {
     color: #FFF;
   }
-  .site-header__btn-avatar {
-    display: none;
-    @include breakpoint(tablet-lg) {
-      display: block;
-    }
-  }
+  // .site-header__btn-avatar {
+  //   display: none;
+  //   @include breakpoint(tablet-lg) {
+  //     display: block;
+  //   }
+  // }
   .site-header__btn-menu {
     @include breakpoint(tablet-lg) {
       display: none;
@@ -424,23 +424,54 @@ h1,h5 {
     flex-direction: row;
   }
   .searchBox {
+
+    display: block;
+    @include breakpoint(tablet-lg) {
+      margin-top: 24px;
+    }
+    @include breakpoint(phone) {
+      display: flex;
+      width:90%;
+      background-color: white !important;
+      height: 45px;
+      border-color: black;
+      justify-content: space-between;
+    }
+  }
+.searchButton{
+display: none;
+    @include breakpoint(phone) {
+          width: 45px;
+    height: 45px;
     display: flex;
-    width:90%;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    }
+  }
+  .searchBox_phone{
+    display: flex;
+    width:80%;
+    margin-right: auto;
+    margin-left: auto;
     background-color: white !important;
     height: 45px;
     border-color: black;
     justify-content: space-between;
-    @include breakpoint(tablet-lg) {
-      margin-top: 24px;
+    @include breakpoint(phone) {
+      display: none !important;
     }
   }
-  .searchButton{
+  .searchButton_phone{
     width: 45px;
     height: 45px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: orange;
+    @include breakpoint(phone) {
+      display: none;
+    }
   }
   .subMenuStyle{
     display: flex;
@@ -2625,11 +2656,13 @@ h1,h5 {
     line-height: 150%;
     text-align: center;
     margin-bottom: 24px;
+    color: white;
   }
   .form-block__description {
     font-size: 14px;
     line-height: 165%;
     text-align: center;
+    color: #ABABAB;
   }
   .form {
     margin-top: 40px;
@@ -2651,14 +2684,17 @@ h1,h5 {
     height: 47px;
     width: 100%;
     font-weight: 500;
-    color: #808080;
+    color: white;
     padding: 0 22px;
     border-radius: 40px;
-    border: 1px solid #D8D8D8;
+    border: 1px solid #ABABAB;
     @include breakpoint(phone) {
       height: 56px;
       padding: 0 40px;
     }
+    @include placeholder {
+      color: #ABABAB;
+  }
     &.form__input--sm {
       height: 49px;
       padding: 0 28px;
@@ -2688,7 +2724,9 @@ h1,h5 {
     justify-content: space-between;
     display: flex;
     .btn-social {
-      width: 48%;
+      width: 100%;
+      justify-content: center;
+      color: white;
     }
   }
   .btn-submit {
@@ -2706,7 +2744,7 @@ h1,h5 {
   .form__signup-link {
     margin-top: 22px;
     font-size: 14px;
-    color: #000;
+    color: white;
     padding-bottom: 2px;
     text-align: center;
     a {
@@ -3017,4 +3055,23 @@ h1,h5 {
 .Mui-selected{
   background-color:#f9a2008e !important;
   color:black !important;
+}
+
+td  {color: white !important;}
+th {color: #9E9E9E !important;}
+
+#myTable tr td:nth-child(3), #myTable th:nth-child(3) {
+  //hiding status bar just to make it readable in transactions
+  @include breakpoint(phone) {
+  display: table-cell;
+  }
+  display: none;
+}
+
+#orderMobile tr td:nth-child(1), #orderMobile th:nth-child(1),#orderMobile tr td:nth-child(2), #orderMobile th:nth-child(2),#orderMobile th:nth-child(3) {
+  //hiding status bar just to make it readable in transactions
+  @include breakpoint(phone) {
+  display: table-cell;
+  }
+  display: none;
 }

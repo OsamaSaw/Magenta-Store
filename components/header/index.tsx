@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 import Logo from "../../assets/icons/logo";
@@ -8,6 +8,12 @@ import { RootState } from "store";
 import { SubMenuViewer } from "./subMenuViewer";
 import { videoGames, cards, psn } from "utils/data/MenuData";
 import { MenuItem } from "components/header/MenuItem";
+import Fade from "@mui/material/Fade";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./../../firebase";
+import { ProductType } from "types";
+import { Autocomplete, Divider, Stack, TextField } from "@mui/material";
+import { CustomSearchBar } from "./CustomSearchBar";
 
 type HeaderType = {
   isErrorPage?: Boolean;
@@ -20,6 +26,8 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
 
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const userName = useSelector((state: RootState) => state.user.user);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
@@ -28,7 +36,19 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef(null);
-  const searchRef = useRef(null);
+  const mobileSearchBar = useRef(null);
+  const [search, setSearch] = useState("");
+
+  const fetchProducts = async () => {
+    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      // console.log(newData);
+      setProducts(newData);
+    });
+  };
 
   const headerClass = () => {
     if (window.pageYOffset === 0) {
@@ -37,6 +57,18 @@ const Header = ({ isErrorPage }: HeaderType) => {
       setOnTop(false);
     }
   };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+  };
+
+  // on click outside
+  useOnClickOutside(navRef, closeMenu);
+  // useOnClickOutside(searchRef, closeSearch);
 
   useEffect(() => {
     if (!arrayPaths.includes(router.pathname) || isErrorPage) {
@@ -49,17 +81,33 @@ const Header = ({ isErrorPage }: HeaderType) => {
     };
   }, []);
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  const closeSearch = () => {
-    setSearchOpen(false);
-  };
+  useEffect(() => {
+    if (!onTop) {
+      setTimeout(() => {
+        if (mobileSearchBar.current) {
+          mobileSearchBar.current.style.display = "none";
+        }
+      }, 500);
+    } else {
+      if (mobileSearchBar.current) {
+        mobileSearchBar.current.style.display = "flex";
+      }
+    }
+  }, [onTop]);
 
-  // on click outside
-  useOnClickOutside(navRef, closeMenu);
-  useOnClickOutside(searchRef, closeSearch);
+  const searchSuggestions = useMemo(() => {
+    return products.map((option, index) => ({
+      yourLabel: option.name,
+      id: index,
+      image: option.image,
+      price: option.price || 15,
+      discount: option.discount || 5.5,
+    }));
+  }, [products]);
 
   return (
     <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
@@ -72,18 +120,25 @@ const Header = ({ isErrorPage }: HeaderType) => {
         </Link>
         <div className="miniContainer">
           <div className="searchBox">
-            <input
-              style={{
-                width: "90%",
+            <Stack
+              sx={{
+                width: "100%",
                 alignSelf: "center",
                 color: "black",
                 marginLeft: "10px",
                 marginRight: "10px",
               }}
-            />
+            >
+              <CustomSearchBar
+                search={search}
+                searchSuggestions={searchSuggestions}
+                setSearch={setSearch}
+                customClassName="sm:block hidden"
+              />
+            </Stack>
             <div className="searchButton">
               <i
-                onClick={() => setSearchOpen(!searchOpen)}
+                onClick={() => router.push(`/products?search=${search}`)}
                 className="icon-search"
               ></i>
             </div>
@@ -153,11 +208,20 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          <Link href="/login">
-            <button className="site-header__btn-avatar">
-              <i className="icon-avatar"></i>
-            </button>
-          </Link>
+          {userName == "" ? (
+            <Link href="/login">
+              <button className="site-header__btn-avatar">
+                <i className="icon-avatar"></i>
+              </button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <button className="w-20">
+                <i className="icon-avatar" />
+                <span className="text-base">{userName}</span>
+              </button>
+            </Link>
+          )}
           <button
             onClick={() => setMenuOpen(true)}
             className="site-header__btn-menu"
@@ -168,6 +232,31 @@ const Header = ({ isErrorPage }: HeaderType) => {
           </button>
         </div>
       </div>
+      <Fade timeout={500} in={onTop}>
+        <div ref={mobileSearchBar} className="searchBox_phone">
+          <Stack
+            sx={{
+              width: "100%",
+              alignSelf: "center",
+              color: "black",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          >
+            <CustomSearchBar
+              search={search}
+              searchSuggestions={searchSuggestions}
+              setSearch={setSearch}
+            />
+          </Stack>
+          <div className="searchButton_phone">
+            <i
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="icon-search"
+            ></i>
+          </div>
+        </div>
+      </Fade>
       {showSubMenu && (
         <SubMenuViewer
           setShowSubMenu={setShowSubMenu}
