@@ -150,15 +150,15 @@ const Order = ({ pid }: { pid: string }) => {
                       </TableCell>
                       <TableCell align="center">
                         <div className="flex flex-col md:hidden items-start">
-                          <span>{item.name}</span>
+                          <span className="text-lg">{item.name}</span>
                           <span>platforms</span>
                         </div>
                         <div className="flex flex-col lg:items-end items-center mr-auto ml-auto">
                           <div className="w-full md:w-3/4 flex flex-col lg:flex-row space-y-2 lg:space-y-0">
-                            <div className="text-center lg:w-[75%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
+                            <div className="text-center lg:w-[70%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
                               {currentOrder.items[index].key}
                             </div>
-                            <button className="w-full lg:w-[25%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
+                            <button className="w-full lg:w-[30%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
                               REDEEM ON Platform
                             </button>
                           </div>
