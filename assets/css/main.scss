@@ -1258,12 +1258,12 @@ display: none;
       object-fit: contain;
       width: 45px;
       height: 35px;
-      fill: #000;
+      fill: white;
       margin-right: 15px;
     }
     h6 {
       display: flex;
-      color: #000;
+      color: white;
       font-weight: 300;
       align-items: center;
       margin-bottom: 33px;
@@ -1275,6 +1275,21 @@ display: none;
     p {
       font-size: 13px;
       line-height: 190%;
+    }
+    li{
+      a{        
+
+        i{
+          color:white;        
+          transition-timing-function: ease-in-out;        
+        transition: 1s;
+        }
+        i:hover{
+        color:orange;
+
+
+        }
+      }
     }
   }
   .site-footer__social-networks {
@@ -1307,7 +1322,7 @@ display: none;
       }
       li {
         font-size: 14px;
-        color: #000;
+        color: white;
         margin-bottom: 12px;
         @include breakpoint(phone) {
           margin-bottom: 15px;
@@ -1320,6 +1335,12 @@ display: none;
           }
         }
         a {
+          color:white;
+          transition-timing-function: ease-in-out;        
+          transition: 1s;
+          &:hover{
+            color:orange;
+          }
           &:hover {
             text-decoration: underline;
           }
@@ -1336,6 +1357,7 @@ display: none;
     .container {
       font-size: 11px;
       text-align: center;
+      color:white;
       @include breakpoint(phone) {
         font-size: 16px;
       }

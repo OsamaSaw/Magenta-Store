@@ -2,7 +2,7 @@ import Layout from "../layouts/Main";
 import PageIntro from "../components/page-intro";
 import ProductsFeatured from "../components/products-featured";
 import Footer from "../components/footer";
-import useSwr from "swr";
+// import useSwr from "swr";
 import { MainCarousel } from "components/products-featured/carousel/MainCarousel";
 import { useEffect, useState } from "react";
 import { ProductType } from "types";
