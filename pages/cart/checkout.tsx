@@ -3,6 +3,10 @@ import { useSelector } from "react-redux";
 import CheckoutStatus from "../../components/checkout-status";
 import CheckoutItems from "../../components/checkout/items";
 import { RootState } from "store";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { PaymentOptions } from "./PaymentOptions";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 const CheckoutPage = () => {
   const priceTotal = useSelector((state: RootState) => {
@@ -14,127 +18,92 @@ const CheckoutPage = () => {
 
     return totalPrice;
   });
-
+  const { register, handleSubmit, errors } = useForm();
+  const [option, setOption] = useState(0);
+  const onSubmit = async (data: any) => {
+    console.log(data.email);
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOption((event.target as HTMLInputElement).value);
+  };
   return (
     <Layout>
       <section className="cart">
         <div className="container">
           <div className="cart__intro">
-            <h3 className="cart__title">Shipping and Payment</h3>
+            <h3 className="cart__title">Payment</h3>
             <CheckoutStatus step="checkout" />
           </div>
 
           <div className="checkout-content">
             <div className="checkout__col-6">
-              <div className="checkout__btns">
-                <button className="btn btn--rounded btn--yellow">Log in</button>
-                <button className="btn btn--rounded btn--border">
-                  Sign up
-                </button>
-              </div>
-
               <div className="block">
                 <h3 className="block__title">Shipping information</h3>
-                <form className="form">
-                  <div className="form__input-row form__input-row--two">
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="Email"
-                      />
-                    </div>
-
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="Address"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form__input-row form__input-row--two">
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="First name"
-                      />
-                    </div>
-
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="City"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form__input-row form__input-row--two">
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="Last name"
-                      />
-                    </div>
-
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="Postal code / ZIP"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form__input-row form__input-row--two">
-                    <div className="form__col">
-                      <input
-                        className="form__input form__input--sm"
-                        type="text"
-                        placeholder="Phone number"
-                      />
-                    </div>
-
-                    <div className="form__col">
-                      <div className="select-wrapper select-form">
-                        <select>
-                          <option>Country</option>
-                          <option value="Argentina">Argentina</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </form>
+                <PaymentOptions
+                  onSubmit={onSubmit}
+                  handleSubmit={handleSubmit}
+                  register={register}
+                  option={option}
+                />
               </div>
             </div>
 
             <div className="checkout__col-4">
               <div className="block">
                 <h3 className="block__title">Payment method</h3>
-                <ul className="round-options round-options--three">
-                  <li className="round-item">
-                    <img src="/images/logos/paypal.png" alt="Paypal" />
-                  </li>
-                  <li className="round-item">
-                    <img src="/images/logos/visa.png" alt="Paypal" />
-                  </li>
-                  <li className="round-item">
-                    <img src="/images/logos/mastercard.png" alt="Paypal" />
-                  </li>
-                  <li className="round-item">
-                    <img src="/images/logos/maestro.png" alt="Paypal" />
-                  </li>
-                  <li className="round-item">
-                    <img src="/images/logos/discover.png" alt="Paypal" />
-                  </li>
-                  <li className="round-item">
-                    <img src="/images/logos/ideal-logo.svg" alt="Paypal" />
-                  </li>
-                </ul>
+                <RadioGroup
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={option}
+                  onChange={handleChange}
+                  sx={{ gap: 2 }}
+                >
+                  <FormControlLabel
+                    value={0}
+                    control={<Radio />}
+                    label={
+                      <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
+                        <span className="text-sm">
+                          CREDIT CARD OR DEBIT CARD
+                        </span>
+                        <img
+                          src="/images/logos/mastercard.png"
+                          style={{ objectFit: "contain" }}
+                          alt="Paypal"
+                        />
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value={1}
+                    control={<Radio />}
+                    label={
+                      <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
+                        <span className="text-sm"> PAYPAL PAYMENT</span>
+                        <img
+                          src="/images/logos/paypal.png"
+                          alt="Paypal"
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value={2}
+                    control={<Radio />}
+                    label={
+                      <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
+                        <span className="text-sm">CRYPTOCURRENCY PAYMENTS</span>
+                        <img
+                          src="/images/logos/binance.png"
+                          width={60}
+                          alt="Paypal"
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
+                    }
+                  />
+                </RadioGroup>
               </div>
             </div>
 
