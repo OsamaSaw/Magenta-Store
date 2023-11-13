@@ -789,6 +789,7 @@ display: none;
           p {
             font-size: 12px;
             line-height: 135%;
+            color:#868686;
           }
         }
       }
@@ -2722,6 +2723,26 @@ display: none;
       padding: 0 28px;
     }
   }
+  .form_white_input {
+    height: 47px;
+    width: 100%;
+    color: black;
+    padding: 0 22px;
+    border-radius: 40px;
+    background-color: white;
+    border: 1px solid #ABABAB;
+    @include breakpoint(phone) {
+      height: 56px;
+      padding: 0 40px;
+    }
+    @include placeholder {
+      color: #ABABAB;
+  }
+    &.form__input--sm {
+      height: 49px;
+      padding: 0 28px;
+    }
+  }
   .select-wrapper {
     height: 100%;
     &:before {
@@ -3034,6 +3055,7 @@ display: none;
 
 .checkout-total {
   width: 244px;
+  color: black;
   background: #F1F1F1;
   border-radius: 40px;
   align-items: center;
@@ -3099,4 +3121,11 @@ th {color: #9E9E9E !important;}
 }
 .MuiPaginationItem-root{
   color: white !important;
+}
+
+.payment-element Label {
+  color: white;
+}
+.payment-form .payment-element Label {
+  color: white;
 }

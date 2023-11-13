@@ -4,7 +4,7 @@ import CheckoutStatus from "../../components/checkout-status";
 import CheckoutItems from "../../components/checkout/items";
 import { RootState } from "store";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PaymentOptions } from "./PaymentOptions";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
@@ -20,12 +20,18 @@ const CheckoutPage = () => {
   });
   const { register, handleSubmit, errors } = useForm();
   const [option, setOption] = useState(0);
+
+  const payNowRef = useRef();
+
   const onSubmit = async (data: any) => {
     console.log(data.email);
+    payNowRef.current.click();
   };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOption((event.target as HTMLInputElement).value);
   };
+
   return (
     <Layout>
       <section className="cart">
@@ -40,6 +46,7 @@ const CheckoutPage = () => {
               <div className="block">
                 <h3 className="block__title">Shipping information</h3>
                 <PaymentOptions
+                  errors={errors}
                   onSubmit={onSubmit}
                   handleSubmit={handleSubmit}
                   register={register}
@@ -63,7 +70,11 @@ const CheckoutPage = () => {
                     control={<Radio />}
                     label={
                       <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
-                        <span className="text-sm">
+                        <span
+                          className={`text-sm ${
+                            option == 0 ? "text-black" : "text-gray-400"
+                          } font-medium`}
+                        >
                           CREDIT CARD OR DEBIT CARD
                         </span>
                         <img
@@ -79,7 +90,13 @@ const CheckoutPage = () => {
                     control={<Radio />}
                     label={
                       <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
-                        <span className="text-sm"> PAYPAL PAYMENT</span>
+                        <span
+                          className={`text-sm ${
+                            option == 1 ? "text-black" : "text-gray-400"
+                          } font-medium`}
+                        >
+                          PAYPAL PAYMENT
+                        </span>
                         <img
                           src="/images/logos/paypal.png"
                           alt="Paypal"
@@ -93,7 +110,13 @@ const CheckoutPage = () => {
                     control={<Radio />}
                     label={
                       <div className="w-[300px] bg-white rounded-full p-4 flex flex-row justify-between">
-                        <span className="text-sm">CRYPTOCURRENCY PAYMENTS</span>
+                        <span
+                          className={`text-sm ${
+                            option == 2 ? "text-black" : "text-gray-400"
+                          } font-medium`}
+                        >
+                          CRYPTOCURRENCY PAYMENTS
+                        </span>
                         <img
                           src="/images/logos/binance.png"
                           width={60}
@@ -128,6 +151,7 @@ const CheckoutPage = () => {
               <button type="button" className="btn btn--rounded btn--border">
                 Continue shopping
               </button>
+
               <button type="button" className="btn btn--rounded btn--yellow">
                 Proceed to payment
               </button>

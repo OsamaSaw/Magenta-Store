@@ -14,6 +14,8 @@ function paginateArray(
   currentPage: number,
   itemsPerPage: number,
   filter: string,
+  min: number,
+  max: number,
   setPageItems: Dispatch<SetStateAction<ProductType[]>>,
   settotal: Dispatch<SetStateAction<ProductType[]>>
 ) {
@@ -21,17 +23,16 @@ function paginateArray(
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
-  let newArray = array.filter((item) =>
-    filter?.split(",").includes(item.category)
+  let newArray = array.filter(
+    (item) =>
+      (filter?.length > 0
+        ? filter?.split(",").includes(item.Category)
+        : true) &&
+      item.Price - item.Discount >= min &&
+      item.Price - item.Discount <= max
   );
-  // Use slice to extract the items for the current page
-  if (newArray.length == 0) {
-    settotal(array);
-    setPageItems(array.slice(startIndex, endIndex));
-  } else {
-    settotal(newArray);
-    setPageItems(newArray.slice(startIndex, endIndex));
-  }
+  settotal(newArray);
+  setPageItems(newArray.slice(startIndex, endIndex));
 }
 
 function calculateTotalPages(array: [], itemsPerPage: number) {
@@ -56,17 +57,19 @@ const ProductsContent = () => {
   const itemsPerPage = 9;
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
+  const min = searchParams.get("min");
+  const max = searchParams.get("max");
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const fetchProducts = async () => {
-    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
-      // console.log(newData);
+      console.log(newData);
       setProducts(newData);
     });
   };
@@ -75,14 +78,27 @@ const ProductsContent = () => {
   }, []);
 
   useEffect(() => {
-    const filter = searchParams.get("filter");
-    paginateArray(products, page, itemsPerPage, filter, setPageItems, settotal);
-  }, [filter, products, page]);
+    // const filter = searchParams.get("filter");
+    // const min = searchParams.get("min");
+    // const max = searchParams.get("max");
+    paginateArray(
+      products,
+      page,
+      itemsPerPage,
+      filter,
+      min,
+      max,
+      setPageItems,
+      settotal
+    );
+  }, [filter, min, max, products, page]);
 
   useEffect(() => {
     setNumberOfPages(calculateTotalPages(total, itemsPerPage));
   }, [pageItems]);
-
+  useEffect(() => {
+    setPage(1);
+  }, [max, min]);
   // if (error) return <div>Failed to load users</div>;
 
   // console.log(filter?.split(",")); //here an example to get an array of params
@@ -95,10 +111,12 @@ const ProductsContent = () => {
           {pageItems.map((item: ProductType) => (
             <ProductItem
               id={item.id}
-              name={item.name}
-              price={item.price}
+              name={item["Program Name"]}
+              price={item.Price}
               key={item.id}
-              images={item.image}
+              image={item.Thumb}
+              discount={item.Discount}
+              url={item.Url}
             />
           ))}
         </section>

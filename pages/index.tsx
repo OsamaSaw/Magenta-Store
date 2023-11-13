@@ -17,7 +17,7 @@ const IndexPage = () => {
   const [antiVList, setAntiVList] = useState<ProductType[]>([]);
   const [protectionList, setProtectionList] = useState<ProductType[]>([]);
   const fetchProducts = async () => {
-    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map(
         (doc) =>
           ({

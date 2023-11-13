@@ -157,6 +157,7 @@ const ProductsFilter = () => {
               min={0}
               max={200}
               defaultValue={[0, 200]}
+              value={[router.query.min, router.query.max] as any}
               tipFormatter={(value) => `${value}$`}
               onChange={(value) => {
                 handlePriceRange(value);

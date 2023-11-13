@@ -44,7 +44,7 @@ const Product = ({ pid }: { pid: string }) => {
   ) => {
     const querySnapshot = await getDocs(
       query(
-        collection(db, "ProgramDummyData"),
+        collection(db, "PRODUCTS"),
         where(propertyName, "==", propertyValue)
       )
     );
@@ -66,7 +66,7 @@ const Product = ({ pid }: { pid: string }) => {
   };
 
   useEffect(() => {
-    searchForDocument("name", pid);
+    searchForDocument("Url", pid);
   }, []);
 
   return (

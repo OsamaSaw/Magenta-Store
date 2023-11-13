@@ -43,7 +43,7 @@ const Order = ({ pid }: { pid: string }) => {
   const fetchProducts = async () => {
     // currentOrder.items.forEach(async (element) => {
     const q = query(
-      collection(db, "ProgramDummyData"),
+      collection(db, "PRODUCTS"),
       where(
         documentId(),
         "in",
