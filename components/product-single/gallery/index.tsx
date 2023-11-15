@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import ReactImageMagnify from "react-image-magnify";
 
 type GalleryProductType = {
   images: string[];
@@ -28,7 +29,22 @@ const Gallery = ({
       </div>
 
       <div className="product-gallery__image">
-        <img src={images[selectedImage]} alt="" />
+        <ReactImageMagnify
+          enlargedImagePosition="over"
+          {...{
+            smallImage: {
+              alt: "Product image",
+              isFluidWidth: true,
+              src: images[selectedImage],
+              height: 476,
+            },
+            largeImage: {
+              src: images[selectedImage],
+              width: 476 * 3,
+              height: 476 * 3,
+            },
+          }}
+        />
       </div>
     </section>
   );

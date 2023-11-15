@@ -18,17 +18,16 @@ export type ReviewType = {
 
 export type ProductType = {
   id: string;
-  name: string;
+  ParentId: string;
+  ProgramName: string;
   Category: string;
   Price: number;
-  count: number;
+  count: string;
   Thumb: string;
   Discount: number;
-  description: string;
-  sysReq: string;
-  keyAct: string;
-  lang: string;
   Url: string;
+  Devices: string;
+  Years: string;
 };
 
 export type ProductTypeList = {
@@ -38,6 +37,8 @@ export type ProductTypeList = {
   image: string;
   discount: number;
   url: string;
+  devices: string;
+  years: string;
 };
 
 export type ProductStoreType = {
@@ -48,6 +49,21 @@ export type ProductStoreType = {
   count: number;
   // color: string;
   // size: string;
+};
+export type ProductDataType = {
+  Category: string;
+  Steps: string[];
+  Description: string;
+  DownloadLink: string;
+  Images: string[];
+  SystemRequirements: {
+    HardDiskSpace: string;
+    Memory: string;
+    OperatingSystem: string;
+    Others: string;
+    Processor: string;
+  };
+  Tag: string;
 };
 
 export type GtagEventType = {

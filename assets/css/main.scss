@@ -1939,7 +1939,6 @@ display: none;
     @include breakpoint(phone) {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 100px;
     }
   }
   .product-gallery {
@@ -2124,17 +2123,14 @@ display: none;
     }
   }
   .product-gallery__image {
-    height: 300px;
-    width: 100%;
-    @include breakpoint(phone) {
-      width: 476px;
-      height: 476px;
-    }
+    width: 476px;
+    height: 476px;
     img {
       width: 100%;
       height: 100%;
-      object-position: top center;
-      object-fit: cover;
+      // object-position: top center;
+      // object-fit: cover;
+      max-width: none;
     }
   }
 }

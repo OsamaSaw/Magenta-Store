@@ -10,9 +10,16 @@ import Description from "../../components/product-single/description";
 // import Reviews from "../../components/product-single/reviews";
 // import { server } from "../../utils/server";
 // import useSwr from "swr";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  documentId,
+} from "firebase/firestore";
 // types
-import { ProductType } from "types";
+import { ProductDataType, ProductType } from "types";
 import { db } from "../../firebase";
 import ProductsFeatured from "components/products-featured";
 
@@ -37,6 +44,19 @@ const Product = ({ pid }: { pid: string }) => {
   // const { data } = useSwr("/api/product", fetcher);
   const [selectedImage, setSelectedImage] = useState(0);
   const [product, setProduct] = useState<ProductType>();
+  const [productData, setProductData] = useState<ProductDataType>();
+
+  const fetchProductData = async (product: ProductType) => {
+    const q = query(
+      collection(db, "ProgramConstData"),
+      where(documentId(), "==", product?.ParentId || "45")
+    );
+    const querySnapshot = await getDocs(q);
+    const newData: any = await querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    setProductData(newData[0]);
+  };
 
   const searchForDocument = async (
     propertyName: string,
@@ -53,11 +73,10 @@ const Product = ({ pid }: { pid: string }) => {
       // If there is a matching document, you can access it like this:
       const doc = querySnapshot.docs[0];
       const data = doc.data() as any;
-      const id = doc.id;
       // Do something with the document data
-      setProduct({
+      await setProduct({
         ...data,
-        id: id,
+        id: doc.id,
       });
     } else {
       // No matching document found
@@ -69,6 +88,9 @@ const Product = ({ pid }: { pid: string }) => {
     searchForDocument("Url", pid);
   }, []);
 
+  useEffect(() => {
+    fetchProductData(product);
+  }, [product]);
   return (
     <Layout>
       <Breadcrumb />
@@ -76,18 +98,13 @@ const Product = ({ pid }: { pid: string }) => {
         <div className="container">
           <div className="product-single__content">
             <Gallery
-              images={product?.image || [""]}
+              images={productData?.Images || [""]}
               selectedImage={selectedImage}
               setSelectedImage={setSelectedImage}
             />
             <Content product={product} />
           </div>
-          <Description
-            description={product?.description}
-            keyAct={product?.keyAct}
-            lang={product?.lang}
-            sysReq={product?.sysReq}
-          />
+          <Description data={productData} />
         </div>
       </section>
 

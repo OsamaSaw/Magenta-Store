@@ -27,8 +27,10 @@ const IndexPage = () => {
       );
       // setProducts(newData);
       // console.log(newData);
-      setAntiVList(newData.filter((x) => x.category == "AntiVirus"));
-      setProtectionList(newData.filter((x) => x.category == "Protection"));
+      setAntiVList(newData.filter((x) => x.Category == "Antivirus & Security"));
+      setProtectionList(
+        newData.filter((x) => x.Category == "VPN & Online Privacy")
+      );
     });
   };
 
@@ -42,8 +44,11 @@ const IndexPage = () => {
       <MainCarousel
         carouselImages={["/images/featured1.jpg", "/images/featured2.jpg"]}
       />
-      <ProductsFeatured products={protectionList} title="Protection" />
-      <ProductsFeatured products={antiVList} title="Anti-Virus" />
+      <ProductsFeatured products={antiVList} title="Antivirus & Security" />
+      <ProductsFeatured
+        products={protectionList}
+        title="VPN & Online Privacy"
+      />
       {/* <section className="featured">
         <div className="container">
           <article

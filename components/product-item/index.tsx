@@ -10,6 +10,8 @@ const ProductItem = ({
   name,
   price,
   url,
+  devices,
+  years,
 }: ProductTypeList) => {
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const router = useRouter();
@@ -54,6 +56,9 @@ const ProductItem = ({
         </div>
         <div className="product__description">
           <h3>{name}</h3>
+          <span className="text-white text-sm mb-2">
+            {devices + " / " + years}
+          </span>
           <div
             className={
               "product__price " + (discount ? "product__price--discount" : "")

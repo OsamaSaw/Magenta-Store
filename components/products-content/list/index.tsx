@@ -28,8 +28,8 @@ function paginateArray(
       (filter?.length > 0
         ? filter?.split(",").includes(item.Category)
         : true) &&
-      item.Price - item.Discount >= min &&
-      item.Price - item.Discount <= max
+      item.Price - item.Discount >= (min || 0) &&
+      item.Price - item.Discount <= (max || 200)
   );
   settotal(newArray);
   setPageItems(newArray.slice(startIndex, endIndex));
@@ -69,7 +69,7 @@ const ProductsContent = () => {
         ...doc.data(),
         id: doc.id,
       }));
-      console.log(newData);
+      // console.log(newData);
       setProducts(newData);
     });
   };
@@ -78,9 +78,6 @@ const ProductsContent = () => {
   }, []);
 
   useEffect(() => {
-    // const filter = searchParams.get("filter");
-    // const min = searchParams.get("min");
-    // const max = searchParams.get("max");
     paginateArray(
       products,
       page,
@@ -111,12 +108,14 @@ const ProductsContent = () => {
           {pageItems.map((item: ProductType) => (
             <ProductItem
               id={item.id}
-              name={item["Program Name"]}
+              name={item.ProgramName}
               price={item.Price}
               key={item.id}
               image={item.Thumb}
               discount={item.Discount}
               url={item.Url}
+              devices={item.Devices}
+              years={item.Years}
             />
           ))}
         </section>

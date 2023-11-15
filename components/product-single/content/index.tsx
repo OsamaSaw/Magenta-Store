@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import productsColors from "./../../../utils/data/products-colors";
 // import productsSizes from "./../../../utils/data/products-sizes";
 // import CheckboxColor from "./../../products-filter/form-builder/checkbox-color";
@@ -8,7 +8,6 @@ import { addProduct } from "store/reducers/cart";
 import { toggleFavProduct } from "store/reducers/user";
 import { ProductType, ProductStoreType } from "types";
 import { RootState } from "store";
-
 type ProductContent = {
   product: ProductType;
 };
@@ -39,10 +38,10 @@ const Content = ({ product }: ProductContent) => {
 
   const addToCart = () => {
     const productToSave: ProductStoreType = {
-      id: product.id,
-      name: product.name,
-      image: product.image ? product.image[0] : "",
-      price: (product?.price - (product?.discount ?? 0)).toFixed(2),
+      id: product?.id,
+      name: product?.ProgramName,
+      image: product?.Thumb,
+      price: (product?.Price - (product?.Discount ?? 0)).toFixed(2),
       count: count,
     };
 
@@ -57,16 +56,16 @@ const Content = ({ product }: ProductContent) => {
   return (
     <section className="product-content">
       <div className="product-content__intro">
-        <h5 className="product__id">
+        {/* <h5 className="product__id">
           Product ID:<br></br>
           {product?.id}
-        </h5>
-        {!product?.price && <span className="product-on-sale">Sale</span>}
-        <h2 className="product__name">{product?.name}</h2>
+        </h5> */}
+        {!product?.Price && <span className="product-on-sale">Sale</span>}
+        <h2 className="product__name">{product?.ProgramName}</h2>
         <div className="product__prices">
-          <h4>{(product?.price - (product?.discount ?? 0)).toFixed(2)}</h4>
-          {product?.discount && (
-            <span className="line-through">${product.price}</span>
+          <h4>${(product?.Price - (product?.Discount ?? 0)).toFixed(2)}</h4>
+          {product?.Discount != 0 && (
+            <span className="line-through">${product?.Price}</span>
           )}
         </div>
       </div>
