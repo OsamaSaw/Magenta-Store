@@ -86,20 +86,25 @@ const Description = ({ data }: { data: ProductDataType }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {data?.Steps?.length == 0 ? (
-              <div className="flex flex-col">
-                {data?.Steps?.map((step: string) => (
-                  <span>{step}</span>
-                ))}
-              </div>
-            ) : (
-              <>
+            <>
+              <div>
                 <span>How To Download: </span>
                 <Link className="underline" href={data?.DownloadLink || ""}>
                   Here
                 </Link>
-              </>
-            )}
+              </div>
+              {data && (
+                <div className="flex flex-col">
+                  {Array.isArray(data.Steps) ? (
+                    data.Steps.map((step: string, index: number) => (
+                      <span key={index}>{step}</span>
+                    ))
+                  ) : (
+                    <span>{data.Steps}</span>
+                  )}
+                </div>
+              )}
+            </>
           </AccordionDetails>
         </Accordion>
 

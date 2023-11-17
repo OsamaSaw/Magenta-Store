@@ -8,6 +8,7 @@ import { addProduct } from "store/reducers/cart";
 import { toggleFavProduct } from "store/reducers/user";
 import { ProductType, ProductStoreType } from "types";
 import { RootState } from "store";
+import { CircularProgress } from "@mui/material";
 type ProductContent = {
   product: ProductType;
 };
@@ -55,20 +56,24 @@ const Content = ({ product }: ProductContent) => {
 
   return (
     <section className="product-content">
-      <div className="product-content__intro">
-        {/* <h5 className="product__id">
+      {product ? (
+        <div className="product-content__intro">
+          {/* <h5 className="product__id">
           Product ID:<br></br>
           {product?.id}
         </h5> */}
-        {!product?.Price && <span className="product-on-sale">Sale</span>}
-        <h2 className="product__name">{product?.ProgramName}</h2>
-        <div className="product__prices">
-          <h4>${(product?.Price - (product?.Discount ?? 0)).toFixed(2)}</h4>
-          {product?.Discount != 0 && (
-            <span className="line-through">${product?.Price}</span>
-          )}
+          {!product?.Price && <span className="product-on-sale">Sale</span>}
+          <h2 className="product__name">{product?.ProgramName}</h2>
+          <div className="product__prices">
+            <h4>${(product?.Price - (product?.Discount ?? 0)).toFixed(2)}</h4>
+            {product?.Discount != 0 && (
+              <span className="line-through">${product?.Price}</span>
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <CircularProgress />
+      )}
 
       <div className="product-content__filters">
         {/* <div className="product-filter-item">
