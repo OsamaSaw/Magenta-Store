@@ -33,8 +33,8 @@ const currentOrder = {
   status: "complete",
   total: "1.50$",
   items: [
-    { id: "0dCNQ20DPpJ9t2VH7r3Y", key: "ada2s2d-asdasd-asdasd" },
-    { id: "0v4PYcEHkWxSBH27hnhv", key: "a55dasd-as-55asdasd" },
+    { id: "5PSmCyjj2kNzeAKOXUtx", key: "ada2s2d-asdasd-asdasd" },
+    { id: "5lf1JWeAQk1mXH8gRQKw", key: "a55dasd-as-55asdasd" },
   ],
 };
 
@@ -43,18 +43,19 @@ const Order = ({ pid }: { pid: string }) => {
   const fetchProducts = async () => {
     // currentOrder.items.forEach(async (element) => {
     const q = query(
-      collection(db, "ProgramDummyData"),
+      collection(db, "PRODUCTS"),
       where(
         documentId(),
         "in",
-        currentOrder.items.map((item) => item.id)
+        currentOrder.items?.map((item) => item.id)
       )
     );
     const querySnapshot = await getDocs(q);
     const newData: any = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
+      id: doc.id,
     }));
-    // console.log(newData);
+    console.log(newData);
     setProducts(newData);
     // });
   };
@@ -132,31 +133,35 @@ const Order = ({ pid }: { pid: string }) => {
             {Boolean(products) &&
               products.map((item, index) => {
                 return (
-                  <>
+                  <React.Fragment key={item.id + index}>
                     <TableRow
-                      key={item.id}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell>
-                        {<img className="w-20 h-20" src={item.image[0]} />}
+                        {
+                          <img
+                            className="w-20 h-20 object-cover"
+                            src={item.Thumb}
+                          />
+                        }
                       </TableCell>
                       <TableCell align="left">
                         {
                           <div className="flex flex-col">
-                            <span className="text-lg">{item.name}</span>
+                            <span className="text-lg">{item.ProgramName}</span>
                             <span>platforms</span>
                           </div>
                         }
                       </TableCell>
                       <TableCell align="center">
                         <div className="flex flex-col md:hidden items-start">
-                          <span className="text-lg">{item.name}</span>
+                          <span className="text-lg">{item.ProgramName}</span>
                           <span>platforms</span>
                         </div>
                         <div className="flex flex-col lg:items-end items-center mr-auto ml-auto">
                           <div className="w-full md:w-3/4 flex flex-col lg:flex-row space-y-2 lg:space-y-0">
                             <div className="text-center lg:w-[70%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
-                              {currentOrder.items[index].key}
+                              {currentOrder.items[index]?.key}
                             </div>
                             <button className="w-full lg:w-[30%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
                               REDEEM ON Platform
@@ -168,7 +173,7 @@ const Order = ({ pid }: { pid: string }) => {
                         </div>
                       </TableCell>
                     </TableRow>
-                  </>
+                  </React.Fragment>
                 );
               })}
           </TableBody>

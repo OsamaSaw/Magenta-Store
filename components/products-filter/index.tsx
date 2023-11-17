@@ -7,8 +7,9 @@ import Slider from "rc-slider";
 // import productsTypes from "./../../utils/data/products-types";
 // import productsColors from "./../../utils/data/products-colors";
 // import productsSizes from "./../../utils/data/products-sizes";
-import { videoGames } from "utils/data/MenuData";
 import { useRouter } from "next/router";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -17,6 +18,7 @@ const ProductsFilter = () => {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [PriceRange, setPriceRange] = useState<number[]>([]);
+  const [categories, setCategories] = useState([]);
   const router = useRouter();
   const getUpdatedArray = (data: string[], key: string) => {
     const current = data?.find((item) => item === key);
@@ -46,7 +48,7 @@ const ProductsFilter = () => {
       router.push(
         {
           pathname: router.pathname,
-          query: { min: PriceRange[0], max: PriceRange[1] },
+          query: { min: PriceRange[0] || 0, max: PriceRange[1] || 200 },
         },
         undefined,
         { shallow: true }
@@ -58,8 +60,8 @@ const ProductsFilter = () => {
           pathname: router.pathname,
           query: {
             filter: categories.join(","),
-            min: PriceRange[0],
-            max: PriceRange[1],
+            min: PriceRange[0] || 0,
+            max: PriceRange[1] || 200,
           },
         },
         undefined,
@@ -102,7 +104,19 @@ const ProductsFilter = () => {
       );
     }
   }
-
+  const fetchCategories = async () => {
+    await getDocs(collection(db, "Categories")).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      // console.log(newData);
+      setCategories(newData);
+    });
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   useEffect(() => {
     // if (!router?.isReady) return;
 
@@ -133,16 +147,16 @@ const ProductsFilter = () => {
         <div className="products-filter__block">
           <button type="button">Product Category</button>
           <div className="products-filter__block__content">
-            {videoGames.map((type, index) => (
+            {categories?.map((type, index) => (
               <Checkbox
                 key={index}
                 name="product-type"
-                label={type.title}
+                label={type.category}
                 checked={((router.query.filter as string) ?? "")
                   .split(",")
-                  .includes(type.title)}
+                  .includes(type.category)}
                 onChange={() => {
-                  handleClick(type.title);
+                  handleClick(type.category);
                 }}
               />
             ))}
@@ -157,6 +171,7 @@ const ProductsFilter = () => {
               min={0}
               max={200}
               defaultValue={[0, 200]}
+              value={[router.query.min ?? 0, router.query.max ?? 200] as any}
               tipFormatter={(value) => `${value}$`}
               onChange={(value) => {
                 handlePriceRange(value);

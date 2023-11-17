@@ -40,7 +40,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const [search, setSearch] = useState("");
 
   const fetchProducts = async () => {
-    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,

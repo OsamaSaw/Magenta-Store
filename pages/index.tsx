@@ -2,7 +2,7 @@ import Layout from "../layouts/Main";
 import PageIntro from "../components/page-intro";
 import ProductsFeatured from "../components/products-featured";
 import Footer from "../components/footer";
-import useSwr from "swr";
+// import useSwr from "swr";
 import { MainCarousel } from "components/products-featured/carousel/MainCarousel";
 import { useEffect, useState } from "react";
 import { ProductType } from "types";
@@ -17,7 +17,7 @@ const IndexPage = () => {
   const [antiVList, setAntiVList] = useState<ProductType[]>([]);
   const [protectionList, setProtectionList] = useState<ProductType[]>([]);
   const fetchProducts = async () => {
-    await getDocs(collection(db, "ProgramDummyData")).then((querySnapshot) => {
+    await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map(
         (doc) =>
           ({
@@ -27,8 +27,10 @@ const IndexPage = () => {
       );
       // setProducts(newData);
       // console.log(newData);
-      setAntiVList(newData.filter((x) => x.category == "AntiVirus"));
-      setProtectionList(newData.filter((x) => x.category == "Protection"));
+      setAntiVList(newData.filter((x) => x.Category == "Antivirus & Security"));
+      setProtectionList(
+        newData.filter((x) => x.Category == "VPN & Online Privacy")
+      );
     });
   };
 
@@ -42,8 +44,11 @@ const IndexPage = () => {
       <MainCarousel
         carouselImages={["/images/featured1.jpg", "/images/featured2.jpg"]}
       />
-      <ProductsFeatured products={protectionList} title="Protection" />
-      <ProductsFeatured products={antiVList} title="Anti-Virus" />
+      <ProductsFeatured products={antiVList} title="Antivirus & Security" />
+      <ProductsFeatured
+        products={protectionList}
+        title="VPN & Online Privacy"
+      />
       {/* <section className="featured">
         <div className="container">
           <article

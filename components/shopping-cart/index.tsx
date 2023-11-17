@@ -40,10 +40,9 @@ const ShoppingCart = () => {
                   <Item
                     key={item.id}
                     id={item.id}
+                    image={item.image}
                     name={item.name}
-                    // color={item.color}
                     price={item.price}
-                    // size={item.size}
                     count={item.count}
                   />
                 ))}
@@ -51,7 +50,7 @@ const ShoppingCart = () => {
             </table>
           )}
 
-          {cartItems.length === 0 && <p>Nothing in the cart</p>}
+          {cartItems.length === 0 && <p>Empty</p>}
         </div>
 
         <div className="cart-actions">

@@ -51,15 +51,18 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
           swiperRef.current = swiper;
         }}
       >
-        {products.map((item) => (
-          <SwiperSlide key={item?.id}>
+        {products.map((item, index) => (
+          <SwiperSlide key={item?.id + index}>
             <ProductItem
               id={item?.id}
-              name={item?.name}
-              price={item?.price}
-              discount={item?.discount}
+              name={item?.ProgramName}
+              price={item?.Price}
+              discount={item?.Discount}
               key={item?.id}
-              images={item?.image}
+              image={item?.Thumb}
+              url={item?.Url}
+              devices={item?.Devices}
+              years={item?.Years}
             />
           </SwiperSlide>
         ))}

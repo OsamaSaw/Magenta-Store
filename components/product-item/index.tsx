@@ -5,10 +5,13 @@ import { ProductTypeList } from "types";
 
 const ProductItem = ({
   discount,
-  images,
+  image,
   id,
   name,
   price,
+  url,
+  devices,
+  years,
 }: ProductTypeList) => {
   const [isHoverEnabled, setIsHoverEnabled] = useState(false);
   const router = useRouter();
@@ -30,7 +33,7 @@ const ProductItem = ({
           <button
             type="button"
             onClick={() => {
-              router.push(`/product/${name}`);
+              router.push(`/product/${url}`);
             }}
             className="z-40 absolute left-[50%] top-[35%] -mt-[60px] w-28 -ml-[56px] bg-[#FBB03B] text-white rounded-full p-2"
           >
@@ -38,27 +41,32 @@ const ProductItem = ({
           </button>
         </>
       )}
-      <Link href={`/product/${name}`}>
+      <Link href={`/product/${url}`}>
         <div className="product__image">
           <img
-            src={images ? images[0] : ""}
+            src={image}
             alt="product"
             className={`transition ease-in-out ${
               isHoverEnabled && "blur-[2px]"
             }`}
           />
-          {discount && <span className="product__discount">{discount}%</span>}
+          {discount != 0 && (
+            <span className="product__discount">{discount}%</span>
+          )}
         </div>
         <div className="product__description">
           <h3>{name}</h3>
+          <span className="text-white text-sm mb-2">
+            {devices + " / " + years}
+          </span>
           <div
             className={
               "product__price " + (discount ? "product__price--discount" : "")
             }
           >
-            <h4>{(price - (discount ?? 0)).toFixed(2)}</h4>
+            <h4>{"$ " + (price - (discount ?? 0)).toFixed(2)}</h4>
 
-            {discount && (
+            {discount != 0 && (
               <del>
                 <span>${price}</span>
               </del>

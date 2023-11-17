@@ -41,7 +41,7 @@ const ShoppingCart = ({ image, name, id, count, price }: ProductStoreType) => {
       <td>
         <div className="cart-product">
           <div className="cart-product__img">
-            <img src={image} alt="" />
+            <img src={image} alt="product_image" />
           </div>
 
           <div className="cart-product__content">
