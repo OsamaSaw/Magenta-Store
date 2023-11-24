@@ -152,9 +152,9 @@ const CheckoutPage = () => {
                 Continue shopping
               </button>
 
-              <button type="button" className="btn btn--rounded btn--yellow">
+              {/* <button type="button" className="btn btn--rounded btn--yellow">
                 Proceed to payment
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

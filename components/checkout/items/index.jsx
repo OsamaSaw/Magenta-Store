@@ -9,7 +9,7 @@ const CheckoutItems = () => {
         <li className="checkout-item">
           <div className="checkout-item__content">
             <div className="checkout-item__img">
-              <img src={item.image[0]} />
+              <img src={item.image} />
             </div>
 
             <div className="checkout-item__data">
