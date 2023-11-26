@@ -1,17 +1,18 @@
 import Layout from "../layouts/Main";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+// import { server } from "../utils/server";
+// import { postData } from "../utils/services";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import RegisterPage from "./RegisterPage";
 import { useRef } from "react";
 import { useRouter } from "next/router";
+import { signIn, useSession, signOut } from 'next-auth/react' // signOut
+
 
 type LoginMail = {
   email: string;
@@ -22,14 +23,41 @@ const LoginPage = () => {
   const { register, handleSubmit, errors } = useForm();
   const swiperRef = useRef();
   const router = useRouter();
+  const { data: session } = useSession();
+  if (session) {
+    console.log(session.user); // This will have user info like name, email, image, etc.
+    // signOut()
+    // If user is already logged in, redirect to home or dashboard
+    router.push('/');
+    // signOut()
+    return null; // or
+  }
 
   const onSubmit = async (data: LoginMail) => {
-    const res = await postData(`${server}/api/login`, {
+    signIn('credentials', {
+      redirect: false,
       email: data.email,
-      password: data.password,
+      password: data.password
+    }).then(result => {
+      if (result && result.error) {
+        // Handle error
+        console.log(result.error);
+      } else {
+        router.push("/profile"); // redirect to profile!!!
+
+        // Successful sign in
+        // Redirect or update UI as needed
+      }
+    }).catch(error => {
+      // Handle any other errors
+      console.error('Sign in error:', error);
     });
-    console.log(res);
-    router.push("/profile"); // redirect to profile!!!
+
+    // const res = await postData(`${server}/api/login`, {
+    //   email: data.email,
+    //   password: data.password,
+    // });
+    // console.log(res);
   };
   const nextSlice = () => {
     swiperRef.current?.slideNext();
