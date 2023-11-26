@@ -101,11 +101,11 @@ const Header = ({ isErrorPage }: HeaderType) => {
 
   const searchSuggestions = useMemo(() => {
     return products.map((option, index) => ({
-      yourLabel: option.name,
+      yourLabel: option?.ProgramName,
       id: index,
-      image: option.image,
-      price: option.price || 15,
-      discount: option.discount || 5.5,
+      image: option?.Thumb,
+      price: option?.Price || 15,
+      discount: option?.Discount || 5.5,
     }));
   }, [products]);
 

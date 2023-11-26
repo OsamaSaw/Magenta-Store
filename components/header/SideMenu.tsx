@@ -41,7 +41,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ data, menuTitle }) => {
             <ul>
               {item.listOfLinks.map((link, subIndex) => (
                 <li key={subIndex}>
-                  <a href={link.link}>{link.name}</a>
+                  <a href={link?.link}>{link?.name}</a>
                 </li>
               ))}
             </ul>
