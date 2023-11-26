@@ -40,8 +40,8 @@ export const CustomSearchBar = ({
             <li {...props} key={option.id}>
               <div className="flex flex-row w-full">
                 <img
-                  className="w-12 h-12 mr-5 lg:w-16 lg:h-16"
-                  src={option.image[0]}
+                  className="w-12 h-12 mr-5 lg:w-16 lg:h-16 object-contain"
+                  src={option.image}
                 />
                 <div className="flex flex-row justify-between w-full">
                   <div className="flex flex-col">

@@ -38,12 +38,12 @@ const ShoppingCart = () => {
 
                 {cartItems.map((item) => (
                   <Item
-                    key={item.id}
-                    id={item.id}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
-                    count={item.count}
+                    key={item?.id}
+                    id={item?.id}
+                    image={item?.image}
+                    name={item?.name}
+                    price={item?.price}
+                    count={item?.count}
                   />
                 ))}
               </tbody>

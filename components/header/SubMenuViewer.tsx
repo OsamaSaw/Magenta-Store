@@ -13,8 +13,8 @@ const CustomColumn = ({
     <div className="customColumnStyle">
       <h3 className="text-white font-medium capitalize">{title}</h3>
       {listOfLinks.map((link, index) => (
-        <Link key={link.link + title + index} href={link.link}>
-          {link.name}
+        <Link key={link?.link + title + index} href={link?.link}>
+          {link?.name}
         </Link>
       ))}
     </div>
