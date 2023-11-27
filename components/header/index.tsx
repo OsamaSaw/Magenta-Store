@@ -7,13 +7,16 @@ import { useRouter } from "next/router";
 import { RootState } from "store";
 import { SubMenuViewer } from "./subMenuViewer";
 import { videoGames, cards, psn } from "utils/data/MenuData";
-import { MenuItem } from "components/header/MenuItem";
+import { MenuItem as CustomMenuItem } from "components/header/MenuItem";
 import Fade from "@mui/material/Fade";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./../../firebase";
 import { ProductType } from "types";
-import { Autocomplete, Divider, Stack, TextField } from "@mui/material";
+import { Button, Menu, Stack } from "@mui/material";
 import { CustomSearchBar } from "./CustomSearchBar";
+import { signIn, useSession, signOut } from "next-auth/react"; // signOut
+import React from "react";
+import MenuItem from "@mui/material/MenuItem";
 
 type HeaderType = {
   isErrorPage?: Boolean;
@@ -38,6 +41,8 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const navRef = useRef(null);
   const mobileSearchBar = useRef(null);
   const [search, setSearch] = useState("");
+
+  const { data: session } = useSession();
 
   const fetchProducts = async () => {
     await getDocs(collection(db, "PRODUCTS")).then((querySnapshot) => {
@@ -69,6 +74,17 @@ const Header = ({ isErrorPage }: HeaderType) => {
   // on click outside
   useOnClickOutside(navRef, closeMenu);
   // useOnClickOutside(searchRef, closeSearch);
+
+  //profile button
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  ///////
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     if (!arrayPaths.includes(router.pathname) || isErrorPage) {
@@ -102,6 +118,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   const searchSuggestions = useMemo(() => {
     return products.map((option, index) => ({
       yourLabel: option?.ProgramName,
+      url: option.Url,
       id: index,
       image: option?.Thumb,
       price: option?.Price || 15,
@@ -148,7 +165,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
             ref={navRef}
             className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
           >
-            <MenuItem
+            <CustomMenuItem
               showSubMenu={showSubMenu}
               menuNumber={menuNumber}
               setShowSubMenu={setShowSubMenu}
@@ -157,7 +174,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
               currentNumber={0}
               menuData={videoGames}
             />
-            <MenuItem
+            <CustomMenuItem
               showSubMenu={showSubMenu}
               menuNumber={menuNumber}
               setShowSubMenu={setShowSubMenu}
@@ -166,7 +183,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
               currentNumber={1}
               menuData={cards}
             />
-            <MenuItem
+            <CustomMenuItem
               showSubMenu={showSubMenu}
               menuNumber={menuNumber}
               setShowSubMenu={setShowSubMenu}
@@ -208,17 +225,52 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          {userName == "" ? (
+          {session?.user ? (
+            <div>
+              <Button
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <i className="icon-avatar" />
+                <span className=" whitespace-nowrap text-white">
+                  {session?.user?.name}
+                </span>
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    router.push("/profile");
+                  }}
+                >
+                  My account
+                </MenuItem>
+                <MenuItem
+                  className="text-red-700"
+                  onClick={() => {
+                    handleClose();
+                    signOut();
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
+            </div>
+          ) : (
             <Link href="/login">
               <button className="site-header__btn-avatar">
                 <i className="icon-avatar"></i>
-              </button>
-            </Link>
-          ) : (
-            <Link href="/login">
-              <button className="w-20">
-                <i className="icon-avatar" />
-                <span className="text-base">{userName}</span>
               </button>
             </Link>
           )}

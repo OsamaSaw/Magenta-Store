@@ -11,8 +11,7 @@ import "swiper/css/navigation";
 import RegisterPage from "./RegisterPage";
 import { useRef } from "react";
 import { useRouter } from "next/router";
-import { signIn, useSession, signOut } from 'next-auth/react' // signOut
-
+import { signIn, useSession, signOut } from "next-auth/react"; // signOut
 
 type LoginMail = {
   email: string;
@@ -28,30 +27,32 @@ const LoginPage = () => {
     console.log(session.user); // This will have user info like name, email, image, etc.
     // signOut()
     // If user is already logged in, redirect to home or dashboard
-    router.push('/');
+    router.push("/");
     // signOut()
     return null; // or
   }
 
   const onSubmit = async (data: LoginMail) => {
-    signIn('credentials', {
+    signIn("credentials", {
       redirect: false,
       email: data.email,
-      password: data.password
-    }).then(result => {
-      if (result && result.error) {
-        // Handle error
-        console.log(result.error);
-      } else {
-        router.push("/profile"); // redirect to profile!!!
+      password: data.password,
+    })
+      .then((result) => {
+        if (result && result.error) {
+          // Handle error
+          console.log(result.error);
+        } else {
+          router.push("/profile"); // redirect to profile!!!
 
-        // Successful sign in
-        // Redirect or update UI as needed
-      }
-    }).catch(error => {
-      // Handle any other errors
-      console.error('Sign in error:', error);
-    });
+          // Successful sign in
+          // Redirect or update UI as needed
+        }
+      })
+      .catch((error) => {
+        // Handle any other errors
+        console.error("Sign in error:", error);
+      });
 
     // const res = await postData(`${server}/api/login`, {
     //   email: data.email,

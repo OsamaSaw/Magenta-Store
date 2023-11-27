@@ -35,39 +35,38 @@ export const CustomSearchBar = ({
         />
       )}
       renderOption={(props, option) => (
-        <>
-          <Link href={`/product/${option.yourLabel}`}>
-            <li {...props} key={option.id}>
-              <div className="flex flex-row w-full">
-                <img
-                  className="w-12 h-12 mr-5 lg:w-16 lg:h-16 object-contain"
-                  src={option.image}
-                />
-                <div className="flex flex-row justify-between w-full">
-                  <div className="flex flex-col">
-                    <span className="text-[10px]">OFFER FROM SELLERS</span>
-                    <span className="font-bold">{option.yourLabel}</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    {/* price */}
-                    <span className="text-sm lg:text-base font-bold">
-                      {"$ " + (option?.price - option?.discount).toFixed(2)}
-                    </span>
-                    <span className="line-through text-sm lg:text-base">
-                      {"$ " + option.price}
-                    </span>
-                    <span className=" border-red-500 border border-solid bg-red-50 w-fit text-sm lg:text-base rounded-sm">
-                      {"- " +
-                        Math.round((option?.discount / option?.price) * 100) +
-                        " %"}
-                    </span>
-                  </div>
+        <Link href={`/product/${option?.url}`} key={option?.url}>
+          <li {...props} key={option.id}>
+            <div className="flex flex-row w-full">
+              <img
+                className="w-12 h-12 mr-5 lg:w-16 lg:h-16 object-contain"
+                src={option.image}
+              />
+              <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-col">
+                  <span className="text-[10px]">OFFER FROM SELLERS</span>
+                  <span className="font-bold">{option.yourLabel}</span>
+                </div>
+                <div className="flex flex-col items-end">
+                  {/* price */}
+                  <span className="text-sm lg:text-base font-bold">
+                    {"$ " + (option?.price - option?.discount).toFixed(2)}
+                  </span>
+                  <span className="line-through text-sm lg:text-base">
+                    {"$ " + option.price}
+                  </span>
+                  <span className=" border-red-500 border border-solid bg-red-50 w-fit text-sm lg:text-base rounded-sm">
+                    {"- " +
+                      Math.round((option?.discount / option?.price) * 100) +
+                      " %"}
+                  </span>
                 </div>
               </div>
-            </li>
-          </Link>
+            </div>
+          </li>
+
           <Divider variant="inset" component="li" />
-        </>
+        </Link>
       )}
       sx={{
         "& .MuiOutlinedInput-root": {
