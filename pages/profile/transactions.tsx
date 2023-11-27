@@ -41,7 +41,7 @@ const rows = [
 
 export const Transactions = ({}: {}) => {
   return (
-    <section>
+    <section className="w-[75%] mr-auto ml-auto">
       <span className="text-2xl text-white">Order history</span>
       {/* <div className="searchBox">
         <input
@@ -64,7 +64,6 @@ export const Transactions = ({}: {}) => {
         id="myTable"
         sx={{
           backgroundColor: "#292929",
-          width: "90%",
           marginLeft: "auto",
           marginRight: "auto",
           marginY: "10px",

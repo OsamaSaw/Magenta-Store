@@ -19,6 +19,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transactions } from "./transactions";
+import Layout from "../../layouts/Main";
 const drawerWidth = 240;
 
 const Profile = ({ window }: { window: Window }) => {
@@ -68,147 +69,154 @@ const Profile = ({ window }: { window: Window }) => {
     </div>
   );
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+    <Layout>
+      <Box sx={{ display: "flex", position: "relative", zIndex: 0 }}>
+        <CssBaseline />
+        <AppBar
+          position="absolute"
+          sx={{
+            ml: { sm: `${drawerWidth}px` },
+          }}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
+              <GiHamburgerMenu />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Dashboard
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Box
+          component="nav"
+          sx={{
+            flexShrink: { sm: 0 },
+          }}
+          aria-label="mailbox folders"
+        >
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          {/* <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
           >
-            <GiHamburgerMenu />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
+            {drawer}
+          </Drawer> */}
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+        <Box
+          component="main"
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <Toolbar />
-        {currentPage == 0 ? (
-          <div>
-            <div className="space-y-5 mt-3 text-white w-[100%] lg:w-[50%]">
-              <span>Reset Password:</span>
-              <form className="form" onSubmit={handleSubmit(onSubmit)}>
-                <div className="form__input-row">
-                  <input
-                    className="form__input"
-                    type="password"
-                    placeholder="Old password"
-                    name="oldPassword"
-                    ref={register({ required: true })}
-                  />
-                  {errors.oldPassword &&
-                    errors.oldPassword.type === "required" && (
-                      <p className="message message--error">
-                        This field is required
-                      </p>
-                    )}
-                </div>
+          <Toolbar />
+          {currentPage == 0 ? (
+            <div>
+              <div className="space-y-5 mt-3 text-white w-[100%] lg:w-[50%] mr-auto ml-auto">
+                <span>Reset Password:</span>
+                <form className="form" onSubmit={handleSubmit(onSubmit)}>
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      type="password"
+                      placeholder="Old password"
+                      name="oldPassword"
+                      ref={register({ required: true })}
+                    />
+                    {errors.oldPassword &&
+                      errors.oldPassword.type === "required" && (
+                        <p className="message message--error">
+                          This field is required
+                        </p>
+                      )}
+                  </div>
 
-                <div className="form__input-row">
-                  <input
-                    className="form__input"
-                    type="password"
-                    placeholder="New password"
-                    name="newPassword"
-                    ref={register({ required: true })}
-                  />
-                  {errors.newPassword &&
-                    errors.newPassword.type === "required" && (
-                      <p className="message message--error">
-                        This field is required
-                      </p>
-                    )}
-                </div>
-                <div className="form__input-row">
-                  <input
-                    className="form__input"
-                    type="password"
-                    placeholder="Repeat password"
-                    name="repeatPassword"
-                    ref={register({ required: true })}
-                  />
-                  {errors.repeatPassword &&
-                    errors.repeatPassword.type === "required" && (
-                      <p className="message message--error">
-                        This field is required
-                      </p>
-                    )}
-                </div>
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      type="password"
+                      placeholder="New password"
+                      name="newPassword"
+                      ref={register({ required: true })}
+                    />
+                    {errors.newPassword &&
+                      errors.newPassword.type === "required" && (
+                        <p className="message message--error">
+                          This field is required
+                        </p>
+                      )}
+                  </div>
+                  <div className="form__input-row">
+                    <input
+                      className="form__input"
+                      type="password"
+                      placeholder="Repeat password"
+                      name="repeatPassword"
+                      ref={register({ required: true })}
+                    />
+                    {errors.repeatPassword &&
+                      errors.repeatPassword.type === "required" && (
+                        <p className="message message--error">
+                          This field is required
+                        </p>
+                      )}
+                  </div>
 
-                <button
-                  type="submit"
-                  className="btn btn--rounded btn--yellow btn-submit"
-                >
-                  Reset
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="btn btn--rounded btn--yellow btn-submit"
+                  >
+                    Reset
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div>
-            <span>
-              <Transactions />
-            </span>
-          </div>
-        )}
+          ) : (
+            <div>
+              <span>
+                <Transactions />
+              </span>
+            </div>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </Layout>
   );
 };
 export default Profile;
