@@ -2,8 +2,9 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import { GOOGLE_ID, GOOGLE_SECRET } from "../../../firebase";
+import { GOOGLE_ID, GOOGLE_SECRET, NEXTAUTH_SECRET } from "../../../firebase";
 export default NextAuth({
+  secret: NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: GOOGLE_ID,

@@ -41,7 +41,7 @@ const rows = [
 
 export const Transactions = ({}: {}) => {
   return (
-    <section className="w-[75%] mr-auto ml-auto">
+    <section className="mr-auto ml-auto">
       <span className="text-2xl text-white">Order history</span>
       {/* <div className="searchBox">
         <input
