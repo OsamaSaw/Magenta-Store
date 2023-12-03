@@ -21,7 +21,17 @@ export const StripeComponent = ({
 
   return (
     <Elements
-      options={{ clientSecret, appearance: { theme: "stripe" } }}
+      options={{
+        clientSecret,
+        appearance: {
+          theme: "stripe",
+          rules: {
+            ".Label": {
+              color: "white",
+            },
+          },
+        },
+      }}
       stripe={stripePromise}
     >
       <CheckoutForm returnUrl={returnUrl} />

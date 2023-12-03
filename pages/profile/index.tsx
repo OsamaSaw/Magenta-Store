@@ -6,7 +6,7 @@ import { Transactions } from "./transactions";
 import Layout from "../../layouts/Main";
 import { MdManageAccounts } from "react-icons/md";
 import { HiMiniKey } from "react-icons/hi2";
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 const Profile = ({ window }: { window: Window }) => {
   const [mobileOpen, setMobileOpen] = useState(false);

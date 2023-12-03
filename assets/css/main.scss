@@ -2766,6 +2766,9 @@ display: none;
       padding: 0 28px;
     }
   }
+  .form_white_input:disabled{
+    color:gray;
+  }
   .select-wrapper {
     height: 100%;
     &:before {
@@ -3144,11 +3147,4 @@ th {color: #9E9E9E !important;}
 }
 .MuiPaginationItem-root{
   color: white !important;
-}
-
-.payment-element Label {
-  color: white;
-}
-.payment-form .payment-element Label {
-  color: white;
 }

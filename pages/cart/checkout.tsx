@@ -3,8 +3,7 @@ import { useSelector } from "react-redux";
 import CheckoutStatus from "../../components/checkout-status";
 import CheckoutItems from "../../components/checkout/items";
 import { RootState } from "store";
-import { useForm } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { PaymentOptions } from "./PaymentOptions";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
@@ -18,15 +17,7 @@ const CheckoutPage = () => {
 
     return totalPrice;
   });
-  const { register, handleSubmit, errors } = useForm();
   const [option, setOption] = useState(0);
-
-  const payNowRef = useRef();
-
-  const onSubmit = async (data: any) => {
-    console.log(data.email);
-    payNowRef.current.click();
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOption((event.target as HTMLInputElement).value);
@@ -45,13 +36,7 @@ const CheckoutPage = () => {
             <div className="checkout__col-6">
               <div className="block">
                 <h3 className="block__title">Shipping information</h3>
-                <PaymentOptions
-                  errors={errors}
-                  onSubmit={onSubmit}
-                  handleSubmit={handleSubmit}
-                  register={register}
-                  option={option}
-                />
+                <PaymentOptions option={option} />
               </div>
             </div>
 

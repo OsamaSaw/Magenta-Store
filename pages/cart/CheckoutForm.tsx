@@ -5,6 +5,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 export default function CheckoutForm({ returnUrl }: { returnUrl: string }) {
   const stripe = useStripe();
@@ -12,11 +13,15 @@ export default function CheckoutForm({ returnUrl }: { returnUrl: string }) {
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
 
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = async (e) => {
-    // e.preventDefault();
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    console.log(e.email ?? session?.user?.email);
+    console.log(e.firstName ?? session?.user?.name);
 
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
@@ -63,8 +68,8 @@ export default function CheckoutForm({ returnUrl }: { returnUrl: string }) {
               placeholder="First name"
               name="firstName"
               ref={register({ required: true })}
-              // value = {} check from a nextAuth
-              //   disabled={} // check from a nextAuth
+              value={session?.user?.name}
+              disabled={Boolean(session?.user?.name)}
             />
             {errors.firstName && errors.firstName.type === "required" && (
               <p className="message message--error">This field is required</p>
@@ -81,8 +86,8 @@ export default function CheckoutForm({ returnUrl }: { returnUrl: string }) {
                 pattern:
                   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               })}
-              // value = {} check from a nextAuth
-              //   disabled={} // check from a nextAuth
+              value={session?.user?.email}
+              disabled={Boolean(session?.user?.name)}
             />
             {errors.email && errors.email.type === "required" && (
               <p className="message message--error">This field is required</p>
