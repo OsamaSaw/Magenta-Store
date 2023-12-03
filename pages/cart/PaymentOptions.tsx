@@ -1,18 +1,14 @@
+import { useForm } from "react-hook-form";
 import { StripeComponent } from "./StripeComponent";
+import { signIn, useSession, signOut } from "next-auth/react"; // signOut
 
-export const PaymentOptions = ({
-  onSubmit,
-  option,
-  register,
-  handleSubmit,
-  errors,
-}: {
-  onSubmit: (data: any) => Promise<void>;
-  option: number;
-  register: any;
-  handleSubmit: any;
-  errors: any;
-}) => {
+export const PaymentOptions = ({ option }: { option: number }) => {
+  const { data: session } = useSession();
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = async (data: any) => {
+    console.log(data.email ?? session?.user?.email);
+    console.log(data.firstName ?? session?.user?.name);
+  };
   if (option == 0) {
     return (
       <>
@@ -28,7 +24,7 @@ export const PaymentOptions = ({
   } else if (option == 1) {
     return (
       <>
-        {"userName" ? (
+        {!session?.user ? (
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form__input-row form__input-row--two">
               <div className="form__col">
@@ -38,8 +34,6 @@ export const PaymentOptions = ({
                   placeholder="First name"
                   name="firstName"
                   ref={register({ required: true })}
-                  // value = {} check from a nextAuth
-                  //   disabled={} // check from a nextAuth
                 />
                 {errors.firstName && errors.firstName.type === "required" && (
                   <p className="message message--error">
@@ -58,8 +52,6 @@ export const PaymentOptions = ({
                     pattern:
                       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                   })}
-                  // value = {} check from a nextAuth
-                  //   disabled={} // check from a nextAuth
                 />
                 {errors.email && errors.email.type === "required" && (
                   <p className="message message--error">
@@ -74,21 +66,32 @@ export const PaymentOptions = ({
                 )}
               </div>
             </div>
-            <button className="btn btn--rounded btn--yellow mt-5" id="submit">
+            <button
+              type="submit"
+              className="btn btn--rounded btn--yellow mt-5"
+              id="submit"
+            >
               <span className="button-text">Proceed to payment</span>
             </button>
           </form>
         ) : (
-          <>
+          <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <img style={{ width: 350 }} src="/images/checkout.png" />
-          </>
+            <button
+              type="submit"
+              className="btn btn--rounded btn--yellow mt-5 "
+              id="submit"
+            >
+              <span className="button-text">Proceed to payment</span>
+            </button>
+          </form>
         )}
       </>
     );
   } else if (option == 2) {
     return (
       <>
-        {"userName" ? (
+        {!session?.user ? (
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <div className="form__input-row form__input-row--two">
               <div className="form__col">
@@ -98,8 +101,6 @@ export const PaymentOptions = ({
                   placeholder="First name"
                   name="firstName"
                   ref={register({ required: true })}
-                  // value = {} check from a nextAuth
-                  //   disabled={} // check from a nextAuth
                 />
                 {errors.firstName && errors.firstName.type === "required" && (
                   <p className="message message--error">
@@ -118,8 +119,6 @@ export const PaymentOptions = ({
                     pattern:
                       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                   })}
-                  // value = {} check from a nextAuth
-                  //   disabled={} // check from a nextAuth
                 />
                 {errors.email && errors.email.type === "required" && (
                   <p className="message message--error">
@@ -134,14 +133,25 @@ export const PaymentOptions = ({
                 )}
               </div>
             </div>
-            <button className="btn btn--rounded btn--yellow mt-5" id="submit">
+            <button
+              type="submit"
+              className="btn btn--rounded btn--yellow mt-5"
+              id="submit"
+            >
               <span className="button-text">Proceed to payment</span>
             </button>
           </form>
         ) : (
-          <>
+          <form className="form" onSubmit={handleSubmit(onSubmit)}>
             <img style={{ width: 350 }} src="/images/checkout.png" />
-          </>
+            <button
+              type="submit"
+              className="btn btn--rounded btn--yellow mt-5"
+              id="submit"
+            >
+              <span className="button-text">Proceed to payment</span>
+            </button>
+          </form>
         )}
       </>
     );

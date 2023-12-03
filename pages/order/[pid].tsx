@@ -13,6 +13,7 @@ import { ProductType } from "types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "./../../firebase";
 import { documentId } from "firebase/firestore";
+import Layout from "../../layouts/Main";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const pid = query.pid;
@@ -63,123 +64,129 @@ const Order = ({ pid }: { pid: string }) => {
     fetchProducts();
   }, []);
   return (
-    <div className="flex-1 bg-[#1c1c1c] pt-10 px-[10%]">
-      <span className="text-2xl text-white m-5">Order Details</span>
-      <TableContainer
-        sx={{
-          backgroundColor: "#292929",
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginY: "10px",
-        }}
-        component={Paper}
-      >
-        <Table
-          id="myTable"
+    <Layout>
+      <div className="flex-1 bg-[#1c1c1c] pt-10 px-[10%]">
+        <span className="text-2xl text-white m-5">Order Details</span>
+        <TableContainer
           sx={{
             backgroundColor: "#292929",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginY: "10px",
           }}
-          aria-label="simple table"
+          component={Paper}
         >
-          <TableHead>
-            <TableRow>
-              <TableCell>ORDER NUMBER</TableCell>
-              <TableCell align="left">DATE</TableCell>
-              <TableCell align="left">STATUS</TableCell>
-              <TableCell align="center">TOTAL</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow
-              key={currentOrder.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell>{currentOrder.orderNum}</TableCell>
-              <TableCell align="left">{currentOrder.date}</TableCell>
-              <TableCell align="left">{currentOrder.status}</TableCell>
-              <TableCell align="center">{currentOrder.total}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+          <Table
+            id="myTable"
+            sx={{
+              backgroundColor: "#292929",
+            }}
+            aria-label="simple table"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell>ORDER NUMBER</TableCell>
+                <TableCell align="left">DATE</TableCell>
+                <TableCell align="left">STATUS</TableCell>
+                <TableCell align="center">TOTAL</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow
+                key={currentOrder.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{currentOrder.orderNum}</TableCell>
+                <TableCell align="left">{currentOrder.date}</TableCell>
+                <TableCell align="left">{currentOrder.status}</TableCell>
+                <TableCell align="center">{currentOrder.total}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <span className="text-2xl text-white m-5">Order items</span>
+        <span className="text-2xl text-white m-5">Order items</span>
 
-      <TableContainer
-        sx={{
-          backgroundColor: "#292929",
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginY: "10px",
-        }}
-        component={Paper}
-      >
-        <Table
+        <TableContainer
           sx={{
             backgroundColor: "#292929",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginY: "10px",
           }}
-          aria-label="simple table"
-          id="orderMobile"
+          component={Paper}
         >
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell align="left"></TableCell>
-              <TableCell align="left"></TableCell>
-              <TableCell align="center"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Boolean(products) &&
-              products.map((item, index) => {
-                return (
-                  <React.Fragment key={item.id + index}>
-                    <TableRow
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell>
-                        {
-                          <img
-                            className="w-20 h-20 object-cover"
-                            src={item.Thumb}
-                          />
-                        }
-                      </TableCell>
-                      <TableCell align="left">
-                        {
-                          <div className="flex flex-col">
+          <Table
+            sx={{
+              backgroundColor: "#292929",
+            }}
+            aria-label="simple table"
+            id="orderMobile"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell align="left"></TableCell>
+                <TableCell align="left"></TableCell>
+                <TableCell align="center"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Boolean(products) &&
+                products.map((item, index) => {
+                  return (
+                    <React.Fragment key={item.id + index}>
+                      <TableRow
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell>
+                          {
+                            <img
+                              className="w-20 h-20 object-cover"
+                              src={item.Thumb}
+                            />
+                          }
+                        </TableCell>
+                        <TableCell align="left">
+                          {
+                            <div className="flex flex-col">
+                              <span className="text-lg">
+                                {item.ProgramName}
+                              </span>
+                              <span>platforms</span>
+                            </div>
+                          }
+                        </TableCell>
+                        <TableCell align="center">
+                          <div className="flex flex-col md:hidden items-start">
                             <span className="text-lg">{item.ProgramName}</span>
                             <span>platforms</span>
                           </div>
-                        }
-                      </TableCell>
-                      <TableCell align="center">
-                        <div className="flex flex-col md:hidden items-start">
-                          <span className="text-lg">{item.ProgramName}</span>
-                          <span>platforms</span>
-                        </div>
-                        <div className="flex flex-col lg:items-end items-center mr-auto ml-auto">
-                          <div className="w-full md:w-3/4 flex flex-col lg:flex-row space-y-2 lg:space-y-0">
-                            <div className="text-center lg:w-[70%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
-                              {currentOrder.items[index]?.key}
+                          <div className="flex flex-col lg:items-end items-center mr-auto ml-auto">
+                            <div className="w-full md:w-3/4 flex flex-col lg:flex-row space-y-2 lg:space-y-0">
+                              <div className="text-center lg:w-[70%] h-6 p-5 bg-white text-black max-lg:rounded-lg lg:rounded-l-lg flex items-center justify-center font-bold">
+                                {currentOrder.items[index]?.key}
+                              </div>
+                              <button className="w-full lg:w-[30%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
+                                REDEEM ON Platform
+                              </button>
                             </div>
-                            <button className="w-full lg:w-[30%] p-5 h-6 bg-[#F19D38] text-black text-center max-lg:rounded-lg lg:rounded-r-lg flex items-center justify-center font-bold">
-                              REDEEM ON Platform
-                            </button>
+                            <span className="mt-2 font-light">
+                              How Do I Redeem My Key?
+                            </span>
                           </div>
-                          <span className="mt-2 font-light">
-                            How Do I Redeem My Key?
-                          </span>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </React.Fragment>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+                        </TableCell>
+                      </TableRow>
+                    </React.Fragment>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </Layout>
   );
 };
 

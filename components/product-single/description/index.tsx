@@ -15,16 +15,16 @@ import { ProductDataType } from "types";
 import Link from "next/link";
 
 const Description = ({ data }: { data: ProductDataType }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
+  // const [selectedTab, setSelectedTab] = useState(0);
 
-  const [openTabs, setOpenTabs] = useState<number[]>([]);
-  const toggleTab = (tabIndex) => {
-    if (openTabs.includes(tabIndex)) {
-      setOpenTabs(openTabs.filter((tab) => tab !== tabIndex));
-    } else {
-      setOpenTabs([...openTabs, tabIndex]);
-    }
-  };
+  // const [openTabs, setOpenTabs] = useState<number[]>([]);
+  // const toggleTab = (tabIndex) => {
+  //   if (openTabs.includes(tabIndex)) {
+  //     setOpenTabs(openTabs.filter((tab) => tab !== tabIndex));
+  //   } else {
+  //     setOpenTabs([...openTabs, tabIndex]);
+  //   }
+  // };
 
   return (
     <section className="product-single__description">
@@ -40,8 +40,12 @@ const Description = ({ data }: { data: ProductDataType }) => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails className="space-y-2">
-            {data?.Description.split(".").map((line) => {
-              return Boolean(line) && <Typography>{line + "."}</Typography>;
+            {data?.Description.split(".").map((line, index) => {
+              return (
+                Boolean(line) && (
+                  <Typography key={index}>{line + "."}</Typography>
+                )
+              );
             })}
           </AccordionDetails>
         </Accordion>
@@ -64,7 +68,7 @@ const Description = ({ data }: { data: ProductDataType }) => {
                     key: string
                   ) {
                     return (
-                      <span>
+                      <span key={key}>
                         <span className="font-bold">{key + " : "}</span>
                         <span>{data?.SystemRequirements[key]}</span>
                       </span>

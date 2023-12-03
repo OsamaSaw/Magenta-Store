@@ -86,7 +86,7 @@ const Product = ({ pid }: { pid: string }) => {
 
   useEffect(() => {
     searchForDocument("Url", pid);
-  }, []);
+  }, [pid]);
 
   useEffect(() => {
     fetchProductData(product);
