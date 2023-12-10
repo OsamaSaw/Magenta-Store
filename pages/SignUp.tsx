@@ -17,10 +17,7 @@ const SignUp = () => {
   const onSubmit = async (data: LoginMail) => {
     console.log(data.userName);
   };
-  const [checked, setChecked] = useState(false);
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
+
   const login = () => {
     router.push(
       {
