@@ -1,17 +1,13 @@
 import Layout from "../layouts/Main";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-// import { server } from "../utils/server";
-// import { postData } from "../utils/services";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import RegisterPage from "./RegisterPage";
-import { useRef } from "react";
 import { useRouter } from "next/router";
 import { signIn, useSession, signOut } from "next-auth/react"; // signOut
+import Slide from "@mui/material/Slide";
+import Box from "@mui/material/Box";
 
 type LoginMail = {
   email: string;
@@ -20,7 +16,6 @@ type LoginMail = {
 
 const LoginPage = () => {
   const { register, handleSubmit, errors } = useForm();
-  const swiperRef = useRef();
   const router = useRouter();
   const { data: session } = useSession();
   if (session) {
@@ -60,33 +55,38 @@ const LoginPage = () => {
     // });
     // console.log(res);
   };
-  const nextSlice = () => {
-    swiperRef.current?.slideNext();
+  const signUp = () => {
+    router.push(
+      {
+        pathname: "/SignUp",
+        // query: {
+        //   pageId: "page-1", // update the query param
+        // },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (
     <Layout>
-      <section className="form-page">
-        <div className="container">
-          <div className="back-button-section">
-            <Link href="/products">
-              <i className="icon-left text-white"></i>{" "}
-              <span className="text-white">Back to store</span>
-            </Link>
-          </div>
-
-          <Swiper
-            spaceBetween={30}
-            centeredSlides={true}
-            loop={true}
-            navigation={false}
-            onBeforeInit={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            modules={[Autoplay, Pagination, Navigation]}
-            className="mySwiper select-none swiper-no-swiping"
-          >
-            <SwiperSlide>
+      <Box
+        sx={{
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <Slide direction="left" appear={true} in={true}>
+          <section className="form-page">
+            <div className="container">
+              <div className="back-button-section">
+                <Link href="/products">
+                  <i className="icon-left text-white"></i>{" "}
+                  <span className="text-white">Back to store</span>
+                </Link>
+              </div>
               <div className="form-block">
                 <h2 className="form-block__title">Log in</h2>
                 <p className="form-block__description">Welcome back again</p>
@@ -171,17 +171,14 @@ const LoginPage = () => {
                   </button>
 
                   <p className="form__signup-link">
-                    Not a member yet? <a onClick={nextSlice}>Sign up</a>
+                    Not a member yet? <a onClick={signUp}>Sign up</a>
                   </p>
                 </form>
               </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <RegisterPage nextSlide={nextSlice} />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-      </section>
+            </div>
+          </section>
+        </Slide>
+      </Box>
     </Layout>
   );
 };
