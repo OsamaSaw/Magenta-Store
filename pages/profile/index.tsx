@@ -6,6 +6,8 @@ import { Transactions } from "./transactions";
 import Layout from "../../layouts/Main";
 import { MdManageAccounts } from "react-icons/md";
 import { HiMiniKey } from "react-icons/hi2";
+import {useSession} from "next-auth/react";
+
 // const drawerWidth = 240;
 
 const Profile = ({ window }: { window: Window }) => {
@@ -13,7 +15,11 @@ const Profile = ({ window }: { window: Window }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const router = useRouter();
   const { register, handleSubmit, errors } = useForm();
+  const { data: session } = useSession();
+  if (session) {
+    console.log(session); // This will have user info like name, email, image, etc.
 
+  }
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };

@@ -1,8 +1,10 @@
 import Layout from "../layouts/Main";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+// import { server } from "../utils/server";
+// import { postData } from "../utils/services";
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
 
 type ForgotMail = {
   email: string;
@@ -12,13 +14,17 @@ const ForgotPassword = () => {
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data: ForgotMail) => {
-    const res = await postData(`${server}/api/login`, {
-      email: data.email,
-    });
-
-    console.log(res);
+    const auth = getAuth();
+    try {
+      await sendPasswordResetEmail(auth, data.email);
+      // Display a success message to the user, indicating that the email has been sent
+      console.log("Password reset email sent successfully to:", data.email);
+    } catch (error) {
+      // Handle errors, such as user not found or network issues
+      console.error("Error sending password reset email:", error);
+    }
   };
-
+  // functionality
   return (
     <Layout>
       <section className="form-page">
@@ -62,20 +68,20 @@ const ForgotPassword = () => {
                 )}
               </div>
 
-              <div className="form__input-row">
-                <input
-                  className="form__input"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  ref={register({ required: true })}
-                />
-                {errors.password && errors.password.type === "required" && (
-                  <p className="message message--error">
-                    This field is required
-                  </p>
-                )}
-              </div>
+              {/*<div className="form__input-row">*/}
+              {/*  <input*/}
+              {/*    className="form__input"*/}
+              {/*    type="password"*/}
+              {/*    placeholder="Password"*/}
+              {/*    name="password"*/}
+              {/*    ref={register({ required: true })}*/}
+              {/*  />*/}
+              {/*  {errors.password && errors.password.type === "required" && (*/}
+              {/*    <p className="message message--error">*/}
+              {/*      This field is required*/}
+              {/*    </p>*/}
+              {/*  )}*/}
+              {/*</div>*/}
 
               <button
                 type="submit"

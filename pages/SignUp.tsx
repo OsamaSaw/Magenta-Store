@@ -5,6 +5,9 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 import Layout from "../layouts/Main";
 import Link from "next/link";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {app} from "../firebase"
+
 
 type LoginMail = {
   Email: string;
@@ -14,8 +17,30 @@ type LoginMail = {
 const SignUp = () => {
   const { register, handleSubmit, errors } = useForm();
   const router = useRouter();
-  const onSubmit = async (data: LoginMail) => {
-    console.log(data.userName);
+  // const onSubmit = async (data: LoginMail) => {
+  //   console.log(data.userName);
+  // };
+
+  const registerUser = async (data:LoginMail) => {
+    const auth = getAuth(app);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, data.Email, data.Password);
+      const user = userCredential.user;
+
+      // Update the user's profile with userName
+      await updateProfile(user, {
+        displayName: data.userName,
+        // any other profile fields
+      });
+
+      console.log('User created successfully with username:', user.displayName);
+      console.log(user)
+      // Additional steps after successful registration
+    } catch (error) {
+      console.error('Error creating new user:', error.message);
+      // Handle errors
+    }
   };
 
   const login = () => {
@@ -56,7 +81,7 @@ const SignUp = () => {
                 text ever since the 1500s
               </p>
 
-              <form className="form" onSubmit={handleSubmit(onSubmit)}>
+              <form className="form" onSubmit={handleSubmit(registerUser)}>
                 <div className="form__input-row">
                   <input
                     className="form__input"

@@ -19,13 +19,17 @@ const LoginPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
   if (session) {
-    console.log(session.user); // This will have user info like name, email, image, etc.
+    console.log(session); // This will have user info like name, email, image, etc.
     // signOut()
     // If user is already logged in, redirect to home or dashboard
     router.push("/");
     // signOut()
     return null; // or
   }
+
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
+  };
 
   const onSubmit = async (data: LoginMail) => {
     signIn("credentials", {
@@ -37,6 +41,9 @@ const LoginPage = () => {
         if (result && result.error) {
           // Handle error
           console.log(result.error);
+          console.log("then Failed")
+          console.log(session);
+
         } else {
           router.push("/profile"); // redirect to profile!!!
 
@@ -158,7 +165,7 @@ const LoginPage = () => {
                   </div>
 
                   <div className="form__btns">
-                    <button type="button" className="btn-social google-btn">
+                    <button type="button" className="btn-social google-btn" onClick={handleGoogleLogin}>
                       <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
                     </button>
                   </div>
