@@ -2,12 +2,16 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Slide from "@mui/material/Slide";
 import Box from "@mui/material/Box";
-import { useState } from "react";
 import Layout from "../layouts/Main";
 import Link from "next/link";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import {app} from "../firebase"
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { app } from "../firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type LoginMail = {
   Email: string;
@@ -21,11 +25,15 @@ const SignUp = () => {
   //   console.log(data.userName);
   // };
 
-  const registerUser = async (data:LoginMail) => {
+  const registerUser = async (data: LoginMail) => {
     const auth = getAuth(app);
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.Email, data.Password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.Email,
+        data.Password
+      );
       const user = userCredential.user;
 
       // Update the user's profile with userName
@@ -34,11 +42,19 @@ const SignUp = () => {
         // any other profile fields
       });
 
-      console.log('User created successfully with username:', user.displayName);
-      console.log(user)
+      console.log("User Created Successfully with username:", user.displayName);
+      console.log(user);
+      toast("User Created Successfully");
+      setTimeout(() => {
+        router.push("/");
+      }, 5000);
+
       // Additional steps after successful registration
-    } catch (error) {
-      console.error('Error creating new user:', error.message);
+    } catch (error: any) {
+      console.error("Error creating new user:", error.message);
+      toast(
+        "Error creating new user:" + error.message.replace("Firebase:", "")
+      );
       // Handle errors
     }
   };
@@ -68,8 +84,8 @@ const SignUp = () => {
         <Slide direction="right" appear={true} in={true}>
           <div className="container">
             <div className="back-button-section">
-              <Link href="/products">
-                <i className="icon-left text-white"></i>{" "}
+              <Link href="/">
+                <i className="icon-left text-white"></i>
                 <span className="text-white">Back to store</span>
               </Link>
             </div>
@@ -96,10 +112,6 @@ const SignUp = () => {
                     </p>
                   )}
                 </div>
-
-                {/* <div className="form__input-row">
-          <input className="form__input" placeholder="Last Name" type="text" />
-        </div> */}
 
                 <div className="form__input-row">
                   <input
@@ -183,6 +195,7 @@ const SignUp = () => {
           </div>
         </Slide>
       </Box>
+      <ToastContainer closeOnClick />
     </Layout>
   );
 };
