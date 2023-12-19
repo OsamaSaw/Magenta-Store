@@ -3,8 +3,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 // import { server } from "../utils/server";
 // import { postData } from "../utils/services";
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 type ForgotMail = {
   email: string;
@@ -30,8 +29,9 @@ const ForgotPassword = () => {
       <section className="form-page">
         <div className="container">
           <div className="back-button-section">
-            <Link href="/products">
-              <i className="icon-left"></i> Back to shop
+            <Link href="/login">
+              <i className="icon-left text-white"></i>
+              <span className="text-white">Back to Log in</span>
             </Link>
           </div>
 
