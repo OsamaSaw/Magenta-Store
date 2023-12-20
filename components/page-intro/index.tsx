@@ -6,7 +6,7 @@ const PageIntro = () => {
   const size = useWindowSize();
   return (
     <section className="page-intro">
-      {loading ? (
+      {loading && (
         <img
           src={
             size.width >= 767
@@ -17,24 +17,20 @@ const PageIntro = () => {
           className={`${
             size.width >= 767 ? "h-[90vh]" : "h-[450px]"
           } w-full relative`}
-          onLoad={(e) => {
-            setLoading(false);
-          }}
-        />
-      ) : (
-        <img
-          src={
-            size.width >= 767 ? "/images/cypherKeys.gif" : "/images/mobile.gif"
-          }
-          style={{ objectFit: "cover" }}
-          className={`${
-            size.width >= 767 ? "h-[90vh]" : "h-[450px]"
-          } w-full relative`}
-          onLoad={(e) => {
-            setLoading(false);
-          }}
         />
       )}
+      <img
+        src={
+          size.width >= 767 ? "/images/cypherKeys.gif" : "/images/mobile.gif"
+        }
+        style={{ objectFit: "cover", display: loading ? "none" : "block" }}
+        className={`${
+          size.width >= 767 ? "h-[90vh]" : "h-[450px]"
+        } w-full relative`}
+        onLoad={(e) => {
+          setLoading(false);
+        }}
+      />
 
       <div className="shop-data">
         <div className="container">
