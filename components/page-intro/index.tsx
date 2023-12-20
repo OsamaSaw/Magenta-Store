@@ -1,52 +1,36 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { EffectFade, Navigation, Autoplay } from "swiper/modules";
-import Link from "next/link";
-
-// SwiperCore.use([EffectFade, Navigation]);
+import { useWindowSize } from "components/header/useWindowSize";
+import { useState } from "react";
 
 const PageIntro = () => {
+  const [loading, setLoading] = useState(true);
+  const size = useWindowSize();
   return (
     <section className="page-intro">
-      <div className="page-intro__slide">
-        {/* <Swiper
-          navigation
-          effect="fade"
-          className="swiper-wrapper"
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          modules={[Autoplay, Navigation]}
-        >
-          <SwiperSlide>
-            <Link href={"/product/1"}>
-              <div
-                className="page-intro__slide"
-                style={{ backgroundImage: "url('/images/slide-1.jpg')" }}
-              >
-                <div className="container">
-                  <div className="page-intro__slide__content">
-                    <h2>Trust me bro</h2>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div
-              className="page-intro__slide"
-              style={{ backgroundImage: "url('/images/slide-2.jpg')" }}
-            >
-              <div className="container">
-                <div className="page-intro__slide__content">
-                  <h2>buy all your keys from one place</h2>
-                </div>
-              </div>
-            </div>
-          </SwiperSlide>
-        </Swiper> */}
-      </div>
+      {loading && (
+        <img
+          src={
+            size.width >= 767
+              ? "/images/placeholder.jpg"
+              : "/images/placeholder2.jpg"
+          }
+          style={{ objectFit: "cover" }}
+          className={`${
+            size.width >= 767 ? "h-[90vh]" : "h-[450px]"
+          } w-full relative`}
+        />
+      )}
+      <img
+        src={
+          size.width >= 767 ? "/images/cypherKeys.gif" : "/images/mobile.gif"
+        }
+        style={{ objectFit: "cover", display: loading ? "none" : "block" }}
+        className={`${
+          size.width >= 767 ? "h-[90vh]" : "h-[450px]"
+        } w-full relative`}
+        onLoad={(e) => {
+          setLoading(false);
+        }}
+      />
 
       <div className="shop-data">
         <div className="container">
