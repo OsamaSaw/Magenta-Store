@@ -1,10 +1,7 @@
-import { BiWorld } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import { BsExclamationCircle } from "react-icons/bs";
 import { HiMiniKey } from "react-icons/hi2";
 import { AiFillCaretDown } from "react-icons/ai";
-import { useState } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import {
   Accordion,
   AccordionDetails,
@@ -15,17 +12,6 @@ import { ProductDataType } from "types";
 import Link from "next/link";
 
 const Description = ({ data }: { data: ProductDataType }) => {
-  // const [selectedTab, setSelectedTab] = useState(0);
-
-  // const [openTabs, setOpenTabs] = useState<number[]>([]);
-  // const toggleTab = (tabIndex) => {
-  //   if (openTabs.includes(tabIndex)) {
-  //     setOpenTabs(openTabs.filter((tab) => tab !== tabIndex));
-  //   } else {
-  //     setOpenTabs([...openTabs, tabIndex]);
-  //   }
-  // };
-
   return (
     <section className="product-single__description">
       <div className="w-full">
@@ -111,21 +97,6 @@ const Description = ({ data }: { data: ProductDataType }) => {
             </>
           </AccordionDetails>
         </Accordion>
-
-        {/* <Accordion>
-          <AccordionSummary
-            expandIcon={<AiFillCaretDown />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>
-              <BiWorld className="inline-block mx-1" /> Languages
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{lang}</Typography>
-          </AccordionDetails>
-        </Accordion> */}
       </div>
     </section>
   );

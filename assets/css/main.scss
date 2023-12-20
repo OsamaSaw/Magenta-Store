@@ -796,71 +796,28 @@ display: none;
       }
     }
   }
-  .page-intro__slide {
-    height: 450px;
-    position: relative;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    // background-color: #FAFAFA;
-    background-image: url("/images/mobile.gif");
-    @include breakpoint(phone) {
-      height: 90vh;
-      background-image: url("/images/cypherKeys.gif");
-    }
-    &:before {
-      content: '';
-      left: 0;
-      z-index: 5;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      background-color: rgba(0,0,0, 0.2);
-    }
-    .container {
-      z-index: 10;
-      display: flex;
-      position: relative;
-      align-items: center;
-      height: 100%;
-    }
-    .page-intro__slide__content {
-      margin-top: auto;
-      margin-bottom: 40px;
-      @include breakpoint(phone) {
-        margin-bottom: 80px;
-        margin-top: 0;
-      }
-      h2 {
-        font-size: 36px;
-        color: #FFF;
-        font-weight: 600;
-        line-height: 120%;
-        margin-bottom: 45px;
-        @include breakpoint(phone) {
-          font-size: 64px;
-          width: 600px;
-        }
-      }
-      .btn-shop {
-        display: flex;
-        color: #FFF;
-        align-items: center;
-        i {
-          justify-content: center;
-          align-items: center;
-          display: flex;
-          width: 40px;
-          height: 40px;
-          color: #FFF;
-          font-size: 15px;
-          margin-right: 10px;
-          background-color: var(--color-orange);
-          border-radius: 100%;
-        }
-      }
-    }
-  }
+  // .page-intro__slide {
+  //   height: ;
+  //   position: relative;
+  //   background-repeat: no-repeat;
+  //   background-position: center;
+  //   background-size: cover;
+  //   background-image: url("/images/mobile.gif");
+  //   @include breakpoint(phone) {
+  //     height: 90vh;
+  //     background-image: url("/images/cypherKeys.gif");
+  //   }
+  //   &:before {
+  //     content: '';
+  //     left: 0;
+  //     z-index: 5;
+  //     width: 100%;
+  //     height: 100%;
+  //     position: absolute;
+  //     background-color: rgba(0,0,0, 0.2);
+  //   }
+     
+  // }
 }
 
 .featured {

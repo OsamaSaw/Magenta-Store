@@ -5,6 +5,7 @@ import { initParticlesEngine } from "@tsparticles/react";
 import { useEffect, useMemo, useState } from "react";
 import { loadSlim } from "@tsparticles/slim";
 import dynamic from "next/dynamic";
+import { useWindowSize } from "components/header/useWindowSize";
 
 type LayoutType = {
   title?: string;
@@ -16,6 +17,7 @@ export default ({ children, title = "Next.js Ecommerce" }: LayoutType) => {
   const router = useRouter();
   const pathname = router.pathname;
   const [init, setInit] = useState(false);
+  const size = useWindowSize();
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -71,7 +73,7 @@ export default ({ children, title = "Next.js Ecommerce" }: LayoutType) => {
           },
         },
         number: {
-          value: 50,
+          value: size.width > 767 ? 50 : 10,
           density: {
             enable: false,
           },

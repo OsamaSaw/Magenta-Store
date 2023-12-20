@@ -10,11 +10,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "rc-slider/assets/index.css";
-import "react-rater/lib/react-rater.css";
 import "../assets/css/styles.scss";
 
 import * as gtag from "./../utils/gtag";
-import {SessionProvider} from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -25,12 +24,11 @@ if (isProduction) {
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
-    <SessionProvider session={pageProps.session}>
-        <Fragment>
-            <Component {...pageProps} />
-        </Fragment>
-    </SessionProvider>
+  <SessionProvider session={pageProps.session}>
+    <Fragment>
+      <Component {...pageProps} />
+    </Fragment>
+  </SessionProvider>
 );
-
 
 export default wrapper.withRedux(MyApp);
