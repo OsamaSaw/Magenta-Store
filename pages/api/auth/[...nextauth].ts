@@ -6,7 +6,7 @@ import {app} from "../../../firebase"
 
 import { GOOGLE_ID, GOOGLE_SECRET, NEXTAUTH_SECRET } from "../../../firebase";
 export default NextAuth({
-  secret: NEXTAUTH_SECRET,
+  // secret: NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: GOOGLE_ID,
@@ -26,6 +26,7 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        console.log(process.env.NEXTAUTH_SECRET)
         console.log("Inside the Authorize Function1")
 
         const auth = getAuth(app);
@@ -38,13 +39,6 @@ export default NextAuth({
           const firebaseToken = await user.getIdToken();
           console.log("Inside the Authorize Function4")
 
-          let dd = {
-            id: user.uid,
-            name: user.displayName || user.email,
-            email: user.email,
-            token: firebaseToken
-          };
-          console.log(dd)
           // Return user details for NextAuth session
           return {
             id: user.uid,
